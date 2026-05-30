@@ -1,39 +1,33 @@
 require('dotenv').config();
 
-const express = require("express")
-const cors= require("cors")
-const dotenv=require("dotenv")
-const pool = require("./database/db")
-const userRoute = require("./route/userRoute")
-dotenv.config() 
+const express = require('express');
+const cors    = require('cors');
+const pool    = require('./database/db');
+
+const userRoute = require('./route/userRoute');
+
+const app  = express();
+const PORT = process.env.PORT || 8000;
 
 
+app.use(cors());
+app.use(express.json());
 
-const app= express()
+app.get('/test', (req, res) => {
+  res.json({ message: 'DriveNepal backend is running' });
+});
 
-app.use(cors())
-app.use(express.json())
+app.get('/db-test', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT NOW() AS time');
+    res.json({ connected: true, time: result.rows[0].time });
+  } catch (err) {
+    res.status(500).json({ connected: false, error: err.message });
+  }
+});
 
-const PORT = process.env.PORT || 8000
+app.use('/api', userRoute);
 
-
-app.listen(PORT,()=>{
-    console.log(`Server idds running ${PORT}`
-
-    )
-})
-
-
-app.get("/test", (req,res) =>{
-    console.log("Server is running")
-    res.send("The backend is running")
-})
-app.get("/db-config", async (req, res) => {
-    const result = await pool.query("SELECT * FROM students")
-    res.json(result.rows)
-})
-app.use("/api",userRoute)
-app.listen(PORT, () =>{
-    console.log(`Server is run `)
-})
- 
+app.listen(PORT, () => {
+  console.log(`DriveNepal server running on port ${PORT}`);
+});
