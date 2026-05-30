@@ -1,32 +1,34 @@
-import { BrowserRouter, Routes, Route} from "react-router-dom";
-import About from "./pages/About";
-import contact from "./pages/Contact";
-import home from "./pages/Contact";
-import Errorfound from "./pages/Errorfound";
-import Contact from "./pages/Contact";
-import Home from "./pages/Contact";
-import Navbar from "./component/NavBar";
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { useAuth } from './context/AuthContext';
 
+import Home     from './pages/Home';
+import Register from './pages/Register';
+import Login    from './pages/Login';
 
-function App(){
-  return(
-    <BrowserRouter>
-    <Navbar />
+const Dashboard = () => <div style={{padding:'2rem'}}>Dashboard (coming soon)</div>;
+
+const GuestRoute = ({ children }) => {
+  const { user, loading } = useAuth();
+  if (loading) return null;
+  return user ? <Navigate to="/dashboard" replace /> : children;
+};
+
+const ProtectedRoute = ({ children }) => {
+  const { user, loading } = useAuth();
+  if (loading) return null;
+  return user ? children : <Navigate to="/login" replace />;
+};
+
+const App = () => {
+  return (
     <Routes>
-      <Route
-        path="/about"
-        element={
-          <>
-          <About /> <Navbar />
-          </>
-        }
-        />      
-      <Route path="/contact" element={<Contact />} />
-      <Route path="/home" element={<Home/>} />
-      <Route path="/Errorfound" element={<Errorfound/>}/>
+      <Route path="/"          element={<Home />} />
+      <Route path="/register"  element={<GuestRoute><Register /></GuestRoute>} />
+      <Route path="/login"     element={<GuestRoute><Login /></GuestRoute>} />
+      <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+      <Route path="*"          element={<Navigate to="/" replace />} />
     </Routes>
-    </BrowserRouter>
   );
-}
+};
 
 export default App;
