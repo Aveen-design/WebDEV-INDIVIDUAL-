@@ -4,31 +4,25 @@ import { useAuth } from '../context/AuthContext';
 import api from '../utils/api';
 
 const Register = () => {
-  const navigate = useNavigate();
-  const { login }  = useAuth();
+  const navigate  = useNavigate();
+  const { login } = useAuth();
 
   const [formData, setFormData] = useState({
-    full_name: '',
-    email:     '',
-    password:  '',
-    confirm_password: '',
-    role:      'customer',
-    phone:     '',
+    full_name: '', email: '', password: '',
+    confirm_password: '', role: 'customer', phone: '',
   });
-
   const [error,   setError]   = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    setError(''); 
+    setError('');
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
-    
     if (!formData.full_name || !formData.email || !formData.password) {
       return setError('Please fill in all required fields');
     }
@@ -48,12 +42,8 @@ const Register = () => {
         role:      formData.role,
         phone:     formData.phone,
       });
-
-     
       login(res.data.data.user, res.data.data.token);
-
       navigate('/dashboard');
-
     } catch (err) {
       setError(err.response?.data?.message || 'Registration failed. Please try again.');
     } finally {
@@ -63,118 +53,92 @@ const Register = () => {
 
   return (
     <div style={styles.page}>
-      <div style={styles.card}>
+      <div style={styles.container}>
 
-        {}
-        <div style={styles.brand}>
-          <span style={styles.brandText}>Drive</span>
-          <span style={styles.brandAccent}>Nepal</span>
+        {/* LEFT — visual panel */}
+        <div style={styles.visualPanel}>
+          <div style={styles.visualTop}>
+            <Link to="/" style={styles.visualLink}>Browse fleet</Link>
+            <Link to="/login" style={styles.visualBtn}>Sign in</Link>
+          </div>
+          <div style={styles.visualIcon}>🚗</div>
+          <div style={styles.visualBottom}>
+            <p style={styles.visualCity}>Join DriveNepal today</p>
+            <p style={styles.visualSub}>Rent a vehicle or list your own — all in one place</p>
+          </div>
         </div>
-        <p style={styles.subtitle}>Create your account</p>
 
         {}
-        {error && <div style={styles.errorBox}>{error}</div>}
-
-        <form onSubmit={handleSubmit} style={styles.form}>
-
-          {}
-          <div style={styles.field}>
-            <label style={styles.label}>Full Name *</label>
-            <input
-              style={styles.input}
-              type="text"
-              name="full_name"
-              placeholder="Aarav Sharma"
-              value={formData.full_name}
-              onChange={handleChange}
-              required
-            />
+        <div style={styles.formPanel}>
+          <div style={styles.brand}>
+            <span style={styles.brandText}>Drive</span>
+            <span style={styles.brandAccent}>Nepal</span>
           </div>
 
-          {}
-          <div style={styles.field}>
-            <label style={styles.label}>Email Address *</label>
-            <input
-              style={styles.input}
-              type="email"
-              name="email"
-              placeholder="aarav@gmail.com"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
-          </div>
+          <h2 style={styles.heading}>Create account</h2>
+          <p style={styles.subheading}>Get started in less than a minute</p>
 
-          {}
-          <div style={styles.field}>
-            <label style={styles.label}>Phone Number</label>
-            <input
-              style={styles.input}
-              type="tel"
-              name="phone"
-              placeholder="98XXXXXXXX"
-              value={formData.phone}
-              onChange={handleChange}
-            />
-          </div>
+          {error && <div style={styles.errorBox}>{error}</div>}
 
-          {}
-          <div style={styles.field}>
-            <label style={styles.label}>I want to</label>
-            <select
-              style={styles.input}
-              name="role"
-              value={formData.role}
-              onChange={handleChange}
-            >
-              <option value="customer">Rent a vehicle</option>
-              <option value="owner">List my vehicle</option>
-            </select>
-          </div>
+          <form onSubmit={handleSubmit} style={styles.form}>
+            <div style={styles.field}>
+              <label style={styles.label}>Full Name *</label>
+              <input style={styles.input} type="text" name="full_name"
+                placeholder="Aarav Sharma" value={formData.full_name}
+                onChange={handleChange} required />
+            </div>
 
-          {}
-          <div style={styles.field}>
-            <label style={styles.label}>Password *</label>
-            <input
-              style={styles.input}
-              type="password"
-              name="password"
-              placeholder="Minimum 8 characters"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
-          </div>
+            <div style={styles.row}>
+              <div style={{ ...styles.field, flex: 1 }}>
+                <label style={styles.label}>Email *</label>
+                <input style={styles.input} type="email" name="email"
+                  placeholder="aarav@gmail.com" value={formData.email}
+                  onChange={handleChange} required />
+              </div>
+              <div style={{ ...styles.field, flex: 1 }}>
+                <label style={styles.label}>Phone</label>
+                <input style={styles.input} type="tel" name="phone"
+                  placeholder="98XXXXXXXX" value={formData.phone}
+                  onChange={handleChange} />
+              </div>
+            </div>
 
-          {}
-          <div style={styles.field}>
-            <label style={styles.label}>Confirm Password *</label>
-            <input
-              style={styles.input}
-              type="password"
-              name="confirm_password"
-              placeholder="Repeat your password"
-              value={formData.confirm_password}
-              onChange={handleChange}
-              required
-            />
-          </div>
+            <div style={styles.field}>
+              <label style={styles.label}>I want to</label>
+              <select style={styles.input} name="role"
+                value={formData.role} onChange={handleChange}>
+                <option value="customer">Rent a vehicle</option>
+                <option value="owner">List my vehicle</option>
+              </select>
+            </div>
 
-          {}
-          <button
-            type="submit"
-            style={{ ...styles.button, opacity: loading ? 0.7 : 1 }}
-            disabled={loading}
-          >
-            {loading ? 'Creating account...' : 'Create Account'}
-          </button>
+            <div style={styles.row}>
+              <div style={{ ...styles.field, flex: 1 }}>
+                <label style={styles.label}>Password *</label>
+                <input style={styles.input} type="password" name="password"
+                  placeholder="Min 8 chars" value={formData.password}
+                  onChange={handleChange} required />
+              </div>
+              <div style={{ ...styles.field, flex: 1 }}>
+                <label style={styles.label}>Confirm *</label>
+                <input style={styles.input} type="password" name="confirm_password"
+                  placeholder="Repeat" value={formData.confirm_password}
+                  onChange={handleChange} required />
+              </div>
+            </div>
 
-        </form>
+            <button type="submit"
+              style={{ ...styles.button, opacity: loading ? 0.7 : 1 }}
+              disabled={loading}>
+              {loading ? 'Creating account...' : 'Create Account'}
+            </button>
+          </form>
 
-        <p style={styles.footerText}>
-          Already have an account?{' '}
-          <Link to="/login" style={styles.link}>Sign in</Link>
-        </p>
+          <p style={styles.footerText}>
+            Already have an account?{' '}
+            <Link to="/login" style={styles.link}>Sign in</Link>
+          </p>
+        </div>
 
       </div>
     </div>
@@ -183,97 +147,65 @@ const Register = () => {
 
 const styles = {
   page: {
-    minHeight:       '100vh',
-    background:      '#0f0f0f',
-    display:         'flex',
-    alignItems:      'center',
-    justifyContent:  'center',
-    padding:         '2rem',
-    fontFamily:      "'Segoe UI', sans-serif",
+    minHeight: '100vh', background: '#f0f0f3', display: 'flex',
+    alignItems: 'center', justifyContent: 'center', padding: '2rem',
+    fontFamily: "'Segoe UI', sans-serif",
   },
-  card: {
-    background:   '#1a1a1a',
-    borderRadius: '16px',
-    padding:      '2.5rem',
-    width:        '100%',
-    maxWidth:     '460px',
-    border:       '1px solid #2a2a2a',
+  container: {
+    display: 'flex', width: '100%', maxWidth: '960px', minHeight: '620px',
+    background: '#fff', borderRadius: '20px', overflow: 'hidden',
+    boxShadow: '0 20px 60px rgba(0,0,0,0.12)',
   },
-  brand: {
-    textAlign:  'center',
-    fontSize:   '1.8rem',
-    fontWeight: '700',
-    marginBottom: '0.25rem',
+  visualPanel: {
+    flex: 1, background: 'linear-gradient(160deg, #14213d 0%, #1d3557 100%)',
+    padding: '2rem', display: 'flex', flexDirection: 'column',
+    justifyContent: 'space-between', position: 'relative', overflow: 'hidden',
   },
-  brandText: {
-    color: '#ffffff',
+  visualTop: {
+    display: 'flex', alignItems: 'center', justifyContent: 'flex-end',
+    gap: '14px', zIndex: 2,
   },
-  brandAccent: {
-    color: '#e63946',
+  visualLink: { color: 'rgba(255,255,255,0.75)', fontSize: '0.85rem', textDecoration: 'none' },
+  visualBtn: {
+    border: '1px solid rgba(255,255,255,0.4)', color: '#fff', fontSize: '0.85rem',
+    padding: '0.5rem 1.1rem', borderRadius: '8px', textDecoration: 'none',
   },
-  subtitle: {
-    textAlign:    'center',
-    color:        '#888',
-    fontSize:     '0.9rem',
-    marginBottom: '1.5rem',
+  visualIcon: {
+    position: 'absolute', inset: 0, display: 'flex', alignItems: 'center',
+    justifyContent: 'center', fontSize: '9rem', opacity: 0.15,
   },
+  visualBottom: { zIndex: 2 },
+  visualCity: { color: '#fff', fontSize: '1rem', margin: 0, fontWeight: '600' },
+  visualSub: { color: 'rgba(255,255,255,0.65)', fontSize: '0.85rem', margin: '0.4rem 0 0' },
+  formPanel: {
+    flex: 1.2, padding: '2.5rem', display: 'flex',
+    flexDirection: 'column', justifyContent: 'center',
+  },
+  brand: { fontSize: '1.3rem', fontWeight: '700', marginBottom: '1.25rem' },
+  brandText: { color: '#14213d' },
+  brandAccent: { color: '#e63946' },
+  heading: { fontSize: '1.9rem', fontWeight: '700', color: '#14213d', margin: '0 0 0.3rem' },
+  subheading: { color: '#888', fontSize: '0.9rem', margin: '0 0 1.5rem' },
   errorBox: {
-    background:   '#2d1515',
-    border:       '1px solid #e63946',
-    color:        '#ff6b6b',
-    borderRadius: '8px',
-    padding:      '0.75rem 1rem',
-    marginBottom: '1rem',
-    fontSize:     '0.875rem',
+    background: '#fdecea', border: '1px solid #e63946', color: '#c1121f',
+    borderRadius: '8px', padding: '0.75rem 1rem', marginBottom: '1rem', fontSize: '0.875rem',
   },
-  form: {
-    display:       'flex',
-    flexDirection: 'column',
-    gap:           '1rem',
-  },
-  field: {
-    display:       'flex',
-    flexDirection: 'column',
-    gap:           '0.4rem',
-  },
-  label: {
-    color:    '#ccc',
-    fontSize: '0.85rem',
-  },
+  form: { display: 'flex', flexDirection: 'column', gap: '0.9rem' },
+  row: { display: 'flex', gap: '0.75rem' },
+  field: { display: 'flex', flexDirection: 'column', gap: '0.4rem' },
+  label: { color: '#444', fontSize: '0.85rem', fontWeight: '500' },
   input: {
-    background:   '#252525',
-    border:       '1px solid #333',
-    borderRadius: '8px',
-    padding:      '0.75rem 1rem',
-    color:        '#fff',
-    fontSize:     '0.95rem',
-    outline:      'none',
-    width:        '100%',
-    boxSizing:    'border-box',
+    background: '#f7f7fa', border: '1px solid #e0e0e6', borderRadius: '10px',
+    padding: '0.8rem 1rem', color: '#14213d', fontSize: '0.95rem',
+    outline: 'none', width: '100%', boxSizing: 'border-box',
   },
   button: {
-    background:   '#e63946',
-    color:        '#fff',
-    border:       'none',
-    borderRadius: '8px',
-    padding:      '0.85rem',
-    fontSize:     '1rem',
-    fontWeight:   '600',
-    cursor:       'pointer',
-    marginTop:    '0.5rem',
-    width:        '100%',
+    background: '#e63946', color: '#fff', border: 'none', borderRadius: '10px',
+    padding: '0.85rem', fontSize: '1rem', fontWeight: '600', cursor: 'pointer',
+    marginTop: '0.5rem', width: '100%',
   },
-  footerText: {
-    textAlign:  'center',
-    color:      '#888',
-    fontSize:   '0.875rem',
-    marginTop:  '1.25rem',
-  },
-  link: {
-    color:          '#e63946',
-    textDecoration: 'none',
-    fontWeight:     '600',
-  },
+  footerText: { textAlign: 'center', color: '#888', fontSize: '0.875rem', marginTop: '1.25rem' },
+  link: { color: '#e63946', textDecoration: 'none', fontWeight: '600' },
 };
 
 export default Register;
