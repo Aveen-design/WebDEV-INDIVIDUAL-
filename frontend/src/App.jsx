@@ -6,6 +6,9 @@ import Register from './pages/Register';
 import Login    from './pages/Login';
 
 const Dashboard = () => <div style={{padding:'2rem'}}>Dashboard (coming soon)</div>;
+const Vehicles  = () => <div style={{padding:'2rem'}}>Vehicles page (Step 9)</div>;
+const About     = () => <div style={{padding:'2rem'}}>About page</div>;
+const Contact   = () => <div style={{padding:'2rem'}}>Contact page</div>;
 
 const GuestRoute = ({ children }) => {
   const { user, loading } = useAuth();
@@ -23,6 +26,9 @@ const App = () => {
   return (
     <Routes>
       <Route path="/"          element={<Home />} />
+      <Route path="/vehicles"  element={<Vehicles />} />
+      <Route path="/about"     element={<About />} />
+      <Route path="/contact"   element={<Contact />} />
       <Route path="/register"  element={<GuestRoute><Register /></GuestRoute>} />
       <Route path="/login"     element={<GuestRoute><Login /></GuestRoute>} />
       <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
