@@ -63,7 +63,7 @@ const getVehicles = async (req, res) => {
       max_price:    req.query.max_price,
       transmission: req.query.transmission,
       fuel_type:    req.query.fuel_type,
-      has_driver:   req.query.has_driver,
+      driver_option: req.query.driver_option,
       sort:         req.query.sort,
       limit,
       offset,

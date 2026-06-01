@@ -4,9 +4,9 @@ import { useAuth } from './context/AuthContext';
 import Home     from './pages/Home';
 import Register from './pages/Register';
 import Login    from './pages/Login';
+import Vehicles from './pages/Vehicles';
 
 const Dashboard = () => <div style={{padding:'2rem'}}>Dashboard (coming soon)</div>;
-const Vehicles  = () => <div style={{padding:'2rem'}}>Vehicles page (Step 9)</div>;
 const About     = () => <div style={{padding:'2rem'}}>About page</div>;
 const Contact   = () => <div style={{padding:'2rem'}}>Contact page</div>;
 

@@ -26,7 +26,7 @@ const createVehicle = async (data) => {
 const searchVehicles = async (filters) => {
   const {
     type, location, min_price, max_price,
-    transmission, fuel_type, has_driver,
+    transmission, fuel_type, driver_option,
     sort, limit, offset,
   } = filters;
 
@@ -57,8 +57,11 @@ const searchVehicles = async (filters) => {
     params.push(fuel_type);
     where.push(`v.fuel_type = $${params.length}`);
   }
-  if (has_driver === 'true') {
+ if (driver_option === 'driver') {
     where.push('v.has_driver = true');
+  }
+  if (driver_option === 'self') {
+    where.push('v.driver_only = false');
   }
 
   const sortMap = {
