@@ -5,6 +5,7 @@ import Home     from './pages/Home';
 import Register from './pages/Register';
 import Login    from './pages/Login';
 import Vehicles from './pages/Vehicles';
+import VehicleDetail from './pages/VehicleDetail';
 
 const Dashboard = () => <div style={{padding:'2rem'}}>Dashboard (coming soon)</div>;
 const About     = () => <div style={{padding:'2rem'}}>About page</div>;
@@ -27,12 +28,14 @@ const App = () => {
     <Routes>
       <Route path="/"          element={<Home />} />
       <Route path="/vehicles"  element={<Vehicles />} />
+      <Route path="/vehicles/:id" element={<VehicleDetail />} />
       <Route path="/about"     element={<About />} />
       <Route path="/contact"   element={<Contact />} />
       <Route path="/register"  element={<GuestRoute><Register /></GuestRoute>} />
       <Route path="/login"     element={<GuestRoute><Login /></GuestRoute>} />
       <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
       <Route path="*"          element={<Navigate to="/" replace />} />
+      
     </Routes>
   );
 };
