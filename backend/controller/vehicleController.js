@@ -50,11 +50,42 @@ const createVehicle = async (req, res) => {
   }
 };
 
-// GET /api/vehicles  — public
 const getVehicles = async (req, res) => {
   try {
-    const vehicles = await vehicleModel.getAllVehicles();
-    res.status(200).json({ success: true, count: vehicles.length, data: vehicles });
+    const page  = Math.max(1, parseInt(req.query.page)  || 1);
+    const limit = Math.min(50, parseInt(req.query.limit) || 12);
+    const offset = (page - 1) * limit;
+
+    const filters = {
+      type:         req.query.type,
+      location:     req.query.location,
+      min_price:    req.query.min_price,
+      max_price:    req.query.max_price,
+      transmission: req.query.transmission,
+      fuel_type:    req.query.fuel_type,
+      has_driver:   req.query.has_driver,
+      sort:         req.query.sort,
+      limit,
+      offset,
+    };
+
+    const rows = await vehicleModel.searchVehicles(filters);
+
+    const total = rows.length > 0 ? Number(rows[0].total_count) : 0;
+    const vehicles = rows.map(({ total_count, ...v }) => v);
+
+    res.status(200).json({
+      success: true,
+      data: {
+        vehicles,
+        pagination: {
+          total,
+          page,
+          limit,
+          pages: Math.ceil(total / limit),
+        },
+      },
+    });
   } catch (err) {
     console.error('Get vehicles error:', err.message);
     res.status(500).json({ success: false, message: 'Server error fetching vehicles' });
