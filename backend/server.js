@@ -6,6 +6,7 @@ const pool    = require('./database/db');
 
 const userRoute = require('./route/userRoute');
 const vehicleRoute = require('./route/vehicleRoute');
+const bookingRoute = require('./route/bookingRoute');
 
 const app  = express();
 const PORT = process.env.PORT || 8000;
@@ -29,6 +30,7 @@ app.get('/db-test', async (req, res) => {
 
 app.use('/api', userRoute);
 app.use('/api/vehicles', vehicleRoute);
+app.use('/api/bookings', bookingRoute);
 
 app.listen(PORT, () => {
   console.log(`DriveNepal server running on port ${PORT}`);
