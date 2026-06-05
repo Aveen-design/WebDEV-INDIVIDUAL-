@@ -91,7 +91,11 @@ const Login = () => {
                 required
               />
             </div>
-
+<div style={{ textAlign: 'right', marginTop: '-0.4rem' }}>
+              <Link to="/forgot-password" style={{ color: '#DC143C', fontSize: '0.82rem', textDecoration: 'none' }}>
+                Forgot password?
+              </Link>
+            </div>
             <button
               type="submit"
               style={{ ...styles.button, opacity: loading ? 0.7 : 1 }}

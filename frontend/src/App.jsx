@@ -6,6 +6,7 @@ import Register from './pages/Register';
 import Login    from './pages/Login';
 import Vehicles from './pages/Vehicles';
 import VehicleDetail from './pages/VehicleDetail';
+import ForgotPassword from './pages/ForgotPassword';
 
 const Dashboard = () => <div style={{padding:'2rem'}}>Dashboard (coming soon)</div>;
 const About     = () => <div style={{padding:'2rem'}}>About page</div>;
@@ -35,6 +36,7 @@ const App = () => {
       <Route path="/login"     element={<GuestRoute><Login /></GuestRoute>} />
       <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
       <Route path="*"          element={<Navigate to="/" replace />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
       
     </Routes>
   );
