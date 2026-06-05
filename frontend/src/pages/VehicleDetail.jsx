@@ -21,9 +21,7 @@ const VehicleDetail = () => {
         const res = await api.get(`/vehicles/${id}`);
         setVehicle(res.data.data);
       } catch (err) {
-        setError(err.response?.status === 404
-          ? 'Vehicle not found.'
-          : 'Could not load this vehicle.');
+        setError(err.response?.status === 404 ? 'Vehicle not found.' : 'Could not load this vehicle.');
       } finally {
         setLoading(false);
       }
@@ -32,20 +30,12 @@ const VehicleDetail = () => {
   }, [id]);
 
   const handleBook = () => {
-    if (!user) {
-      navigate('/login');
-    } else {
-      navigate(`/vehicles/${id}/book`);
-    }
+    if (!user) navigate('/login');
+    else navigate(`/vehicles/${id}/book`);
   };
 
   if (loading) {
-    return (
-      <div style={styles.page}>
-        <Navbar />
-        <div style={styles.message}>Loading...</div>
-      </div>
-    );
+    return (<div style={styles.page}><Navbar /><div style={styles.message}>Loading...</div></div>);
   }
 
   if (error) {
@@ -53,8 +43,7 @@ const VehicleDetail = () => {
       <div style={styles.page}>
         <Navbar />
         <div style={styles.message}>
-          {error}
-          <br />
+          {error}<br />
           <Link to="/vehicles" style={styles.backLink}>← Back to vehicles</Link>
         </div>
         <Footer />
@@ -65,12 +54,10 @@ const VehicleDetail = () => {
   return (
     <div style={styles.page}>
       <Navbar />
-
       <div style={styles.container}>
         <Link to="/vehicles" style={styles.backLink}>← Back to vehicles</Link>
 
         <div style={styles.layout}>
-          {/* LEFT — image + details */}
           <div style={styles.main}>
             <div style={styles.imageWrap}>
               {vehicle.primary_photo ? (
@@ -101,9 +88,7 @@ const VehicleDetail = () => {
             )}
 
             <div style={styles.ownerBox}>
-              <div style={styles.ownerAvatar}>
-                {vehicle.owner_name?.charAt(0).toUpperCase()}
-              </div>
+              <div style={styles.ownerAvatar}>{vehicle.owner_name?.charAt(0).toUpperCase()}</div>
               <div>
                 <p style={styles.ownerLabel}>Listed by</p>
                 <p style={styles.ownerName}>{vehicle.owner_name}</p>
@@ -111,7 +96,6 @@ const VehicleDetail = () => {
             </div>
           </div>
 
-          {/* RIGHT — booking box */}
           <aside style={styles.bookBox}>
             <div style={styles.priceRow}>
               <span style={styles.price}>Rs {Number(vehicle.daily_rate).toLocaleString()}</span>
@@ -119,33 +103,25 @@ const VehicleDetail = () => {
             </div>
 
             {vehicle.has_driver && (
-              <p style={styles.driverInfo}>
-                Driver available: +Rs {Number(vehicle.driver_rate).toLocaleString()}/day
-              </p>
+              <p style={styles.driverInfo}>Driver available: +Rs {Number(vehicle.driver_rate).toLocaleString()}/day</p>
             )}
 
             <div style={styles.optionRow}>
               <span style={styles.optLabel}>Self drive</span>
-              <span style={styles.optValue}>
-                {vehicle.driver_only ? 'Not available' : 'Available'}
-              </span>
+              <span style={styles.optValue}>{vehicle.driver_only ? 'Not available' : 'Available'}</span>
             </div>
             <div style={styles.optionRow}>
               <span style={styles.optLabel}>With driver</span>
-              <span style={styles.optValue}>
-                {vehicle.has_driver ? 'Available' : 'Not available'}
-              </span>
+              <span style={styles.optValue}>{vehicle.has_driver ? 'Available' : 'Not available'}</span>
             </div>
 
             <button onClick={handleBook} style={styles.bookBtn}>
               {user ? 'Book Now' : 'Sign in to Book'}
             </button>
-
             <p style={styles.bookNote}>You won't be charged yet</p>
           </aside>
         </div>
       </div>
-
       <Footer />
     </div>
   );
@@ -161,73 +137,58 @@ const Spec = ({ label, value }) => (
 const cap = (s) => (s ? s.charAt(0).toUpperCase() + s.slice(1) : '');
 
 const styles = {
-  page: { background: '#0a0e1a', minHeight: '100vh', fontFamily: "'Segoe UI', sans-serif" },
-  message: { color: 'rgba(255,255,255,0.6)', textAlign: 'center', padding: '5rem 1rem' },
-  container: { maxWidth: '1100px', margin: '0 auto', padding: '1.5rem' },
-  backLink: { color: '#DC143C', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '500' },
-  layout: {
-    display: 'grid', gridTemplateColumns: '1fr 340px', gap: '2rem',
-    alignItems: 'start', marginTop: '1rem',
-  },
+  page: { background: '#EDEEF5', minHeight: '100vh', fontFamily: "'Inter', sans-serif" },
+  message: { color: '#666', textAlign: 'center', padding: '8rem 1rem 5rem' },
+  container: { maxWidth: '1100px', margin: '0 auto', padding: '8rem 1.5rem 1.5rem' },
+  backLink: { color: '#3B82F6', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '500' },
+  layout: { display: 'grid', gridTemplateColumns: '1fr 340px', gap: '2rem', alignItems: 'start', marginTop: '1rem' },
   main: {},
   imageWrap: {
-    position: 'relative', height: '360px', background: '#11172a',
-    borderRadius: '16px', display: 'flex', alignItems: 'center',
-    justifyContent: 'center', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.08)',
+    position: 'relative', height: '360px', background: '#fff', borderRadius: '16px',
+    display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden',
+    border: '1px solid rgba(0,0,0,0.06)', boxShadow: '0 4px 20px rgba(0,0,0,0.04)',
   },
   image: { width: '100%', height: '100%', objectFit: 'cover' },
-  placeholder: { fontSize: '7rem', opacity: 0.3 },
+  placeholder: { fontSize: '7rem', opacity: 0.25 },
   typeBadge: {
-    position: 'absolute', top: '14px', left: '14px',
-    background: 'rgba(220,20,60,0.9)', color: '#fff', fontSize: '0.75rem',
-    fontWeight: '600', padding: '0.3rem 0.9rem', borderRadius: '20px', textTransform: 'capitalize',
+    position: 'absolute', top: '14px', left: '14px', background: '#60A5FA', color: '#fff',
+    fontSize: '0.75rem', fontWeight: '600', padding: '0.3rem 0.9rem', borderRadius: '20px', textTransform: 'capitalize',
   },
-  title: { color: '#fff', fontSize: '1.8rem', fontWeight: '700', margin: '1.5rem 0 0.3rem' },
-  location: { color: 'rgba(255,255,255,0.6)', margin: '0 0 1.5rem' },
-  specGrid: {
-    display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem', marginBottom: '1.5rem',
-  },
-  spec: {
-    background: '#11172a', border: '1px solid rgba(255,255,255,0.08)',
-    borderRadius: '10px', padding: '0.9rem 1rem',
-  },
-  specLabel: { display: 'block', color: 'rgba(255,255,255,0.45)', fontSize: '0.75rem', marginBottom: '0.2rem' },
-  specValue: { color: '#fff', fontSize: '1rem', fontWeight: '600' },
+  title: { color: '#14213d', fontSize: '1.8rem', fontWeight: '700', margin: '1.5rem 0 0.3rem', fontFamily: 'Outfit, sans-serif' },
+  location: { color: '#666', margin: '0 0 1.5rem' },
+  specGrid: { display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem', marginBottom: '1.5rem' },
+  spec: { background: '#fff', border: '1px solid rgba(0,0,0,0.06)', borderRadius: '10px', padding: '0.9rem 1rem' },
+  specLabel: { display: 'block', color: '#999', fontSize: '0.75rem', marginBottom: '0.2rem' },
+  specValue: { color: '#14213d', fontSize: '1rem', fontWeight: '600' },
   descBox: { marginBottom: '1.5rem' },
-  descTitle: { color: '#fff', fontSize: '1.15rem', fontWeight: '600', margin: '0 0 0.5rem' },
-  descText: { color: 'rgba(255,255,255,0.7)', fontSize: '0.95rem', lineHeight: 1.7, margin: 0 },
+  descTitle: { color: '#14213d', fontSize: '1.15rem', fontWeight: '600', margin: '0 0 0.5rem' },
+  descText: { color: '#555', fontSize: '0.95rem', lineHeight: 1.7, margin: 0 },
   ownerBox: {
-    display: 'flex', alignItems: 'center', gap: '0.9rem',
-    background: '#11172a', border: '1px solid rgba(255,255,255,0.08)',
-    borderRadius: '12px', padding: '1rem 1.2rem',
+    display: 'flex', alignItems: 'center', gap: '0.9rem', background: '#fff',
+    border: '1px solid rgba(0,0,0,0.06)', borderRadius: '12px', padding: '1rem 1.2rem',
   },
   ownerAvatar: {
-    width: '46px', height: '46px', borderRadius: '50%', background: '#DC143C',
-    color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center',
-    fontSize: '1.2rem', fontWeight: '700',
+    width: '46px', height: '46px', borderRadius: '50%', background: '#60A5FA', color: '#fff',
+    display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem', fontWeight: '700',
   },
-  ownerLabel: { color: 'rgba(255,255,255,0.45)', fontSize: '0.75rem', margin: 0 },
-  ownerName: { color: '#fff', fontSize: '1rem', fontWeight: '600', margin: '0.1rem 0 0' },
+  ownerLabel: { color: '#999', fontSize: '0.75rem', margin: 0 },
+  ownerName: { color: '#14213d', fontSize: '1rem', fontWeight: '600', margin: '0.1rem 0 0' },
   bookBox: {
-    background: '#11172a', border: '1px solid rgba(255,255,255,0.1)',
-    borderRadius: '16px', padding: '1.5rem', position: 'sticky', top: '90px',
+    background: '#fff', border: '1px solid rgba(0,0,0,0.08)', borderRadius: '16px',
+    padding: '1.5rem', position: 'sticky', top: '110px', boxShadow: '0 4px 20px rgba(0,0,0,0.05)',
   },
   priceRow: { display: 'flex', alignItems: 'baseline', gap: '0.4rem' },
-  price: { color: '#fff', fontSize: '1.8rem', fontWeight: '800' },
-  perDay: { color: 'rgba(255,255,255,0.5)', fontSize: '0.9rem' },
-  driverInfo: { color: '#6ea8ff', fontSize: '0.85rem', margin: '0.5rem 0 1rem' },
-  optionRow: {
-    display: 'flex', justifyContent: 'space-between', padding: '0.6rem 0',
-    borderTop: '1px solid rgba(255,255,255,0.08)',
-  },
-  optLabel: { color: 'rgba(255,255,255,0.6)', fontSize: '0.9rem' },
-  optValue: { color: '#fff', fontSize: '0.9rem', fontWeight: '500' },
+  price: { color: '#14213d', fontSize: '1.8rem', fontWeight: '800' },
+  perDay: { color: '#999', fontSize: '0.9rem' },
+  driverInfo: { color: '#3B82F6', fontSize: '0.85rem', margin: '0.5rem 0 1rem' },
+  optionRow: { display: 'flex', justifyContent: 'space-between', padding: '0.6rem 0', borderTop: '1px solid rgba(0,0,0,0.06)' },
+  optLabel: { color: '#666', fontSize: '0.9rem' },
+  optValue: { color: '#14213d', fontSize: '0.9rem', fontWeight: '500' },
   bookBtn: {
-    width: '100%', background: '#DC143C', color: '#fff', border: 'none',
-    borderRadius: '10px', padding: '0.9rem', fontSize: '1rem', fontWeight: '600',
-    cursor: 'pointer', marginTop: '1.2rem',
+    width: '100%', background: '#60A5FA', color: '#fff', border: 'none', borderRadius: '10px',
+    padding: '0.9rem', fontSize: '1rem', fontWeight: '600', cursor: 'pointer', marginTop: '1.2rem',
   },
-  bookNote: { textAlign: 'center', color: 'rgba(255,255,255,0.4)', fontSize: '0.8rem', margin: '0.7rem 0 0' },
+  bookNote: { textAlign: 'center', color: '#aaa', fontSize: '0.8rem', margin: '0.7rem 0 0' },
 };
 
 export default VehicleDetail;

@@ -144,7 +144,7 @@ const styles = {
   },
   brand: { fontSize: '1.3rem', fontWeight: '700', marginBottom: '1.5rem' },
   brandText: { color: '#14213d' },
-  brandAccent: { color: '#DC143C' },
+  brandAccent: { color: '#60A5FA' },
   heading: { fontSize: '1.6rem', fontWeight: '700', color: '#14213d', margin: '0 0 0.3rem' },
   subheading: { color: '#888', fontSize: '0.9rem', margin: '0 0 1.5rem' },
   errorBox: {
@@ -162,15 +162,15 @@ const styles = {
     outline: 'none', width: '100%', boxSizing: 'border-box',
   },
   button: {
-    background: '#DC143C', color: '#fff', border: 'none', borderRadius: '10px',
+    background: '#60A5FA', color: '#fff', border: 'none', borderRadius: '10px',
     padding: '0.85rem', fontSize: '1rem', fontWeight: '600', cursor: 'pointer',
   },
   linkBtn: {
-    background: 'transparent', border: 'none', color: '#DC143C',
+    background: 'transparent', border: 'none', color: '#60A5FA',
     fontSize: '0.85rem', cursor: 'pointer', fontWeight: '500',
   },
   footerText: { textAlign: 'center', color: '#888', fontSize: '0.875rem', marginTop: '1.25rem' },
-  link: { color: '#DC143C', textDecoration: 'none', fontWeight: '600' },
+  link: { color: '#60A5FA', textDecoration: 'none', fontWeight: '600' },
 };
 
 export default ForgotPassword;

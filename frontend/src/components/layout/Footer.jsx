@@ -8,7 +8,7 @@ const Footer = () => {
         <div style={styles.col}>
           <div style={styles.brand}>
             <span style={{ color: '#fff' }}>Drive</span>
-            <span style={{ color: '#DC143C' }}>Nepal</span>
+            <span style={{ color: '#60A5FA' }}>Nepal</span>
           </div>
           <p style={styles.tagline}>
             Nepal's trusted online vehicle rental platform.

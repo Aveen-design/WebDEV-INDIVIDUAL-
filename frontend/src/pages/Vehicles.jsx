@@ -19,36 +19,22 @@ const Vehicles = () => {
     setError('');
     try {
       const params = {};
-      Object.entries(filters).forEach(([k, v]) => {
-        if (v) params[k] = v;
-      });
+      Object.entries(filters).forEach(([k, v]) => { if (v) params[k] = v; });
       const res = await api.get('/vehicles', { params });
       setVehicles(res.data.data.vehicles);
-    } catch (err) {
+    } catch {
       setError('Could not load vehicles. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    fetchVehicles();
-  }, []);
+  useEffect(() => { fetchVehicles(); }, []);
 
-  const handleChange = (e) => {
-    setFilters({ ...filters, [e.target.name]: e.target.value });
-  };
-
-  const applyFilters = (e) => {
-    e.preventDefault();
-    fetchVehicles();
-  };
-
+  const handleChange = (e) => setFilters({ ...filters, [e.target.name]: e.target.value });
+  const applyFilters = (e) => { e.preventDefault(); fetchVehicles(); };
   const resetFilters = () => {
-    setFilters({
-      type: '', location: '', min_price: '', max_price: '',
-      transmission: '', driver_option: '', sort: 'newest',
-    });
+    setFilters({ type: '', location: '', min_price: '', max_price: '', transmission: '', driver_option: '', sort: 'newest' });
     setTimeout(fetchVehicles, 0);
   };
 
@@ -78,7 +64,7 @@ const Vehicles = () => {
               <option value="electric">Electric</option>
             </select>
 
-          <label style={styles.label}>Location</label>
+            <label style={styles.label}>Location</label>
             <select name="location" value={filters.location} onChange={handleChange} style={styles.input}>
               <option value="">All cities</option>
               <option value="Kathmandu">Kathmandu</option>
@@ -95,10 +81,8 @@ const Vehicles = () => {
 
             <label style={styles.label}>Price Range (Rs/day)</label>
             <div style={styles.row}>
-              <input name="min_price" value={filters.min_price} onChange={handleChange}
-                placeholder="Min" type="number" style={styles.input} />
-              <input name="max_price" value={filters.max_price} onChange={handleChange}
-                placeholder="Max" type="number" style={styles.input} />
+              <input name="min_price" value={filters.min_price} onChange={handleChange} placeholder="Min" type="number" style={styles.input} />
+              <input name="max_price" value={filters.max_price} onChange={handleChange} placeholder="Max" type="number" style={styles.input} />
             </div>
 
             <label style={styles.label}>Transmission</label>
@@ -149,45 +133,41 @@ const Vehicles = () => {
 };
 
 const styles = {
-  page: { background: '#0a0e1a', minHeight: '100vh', fontFamily: "'Segoe UI', sans-serif" },
-  header: { maxWidth: '1200px', margin: '0 auto', padding: '2.5rem 1.5rem 1rem' },
-  headerTitle: { color: '#fff', fontSize: '2rem', fontWeight: '700', margin: 0 },
-  headerSub: { color: 'rgba(255,255,255,0.5)', margin: '0.4rem 0 0' },
+  page: { background: '#EDEEF5', minHeight: '100vh', fontFamily: "'Inter', sans-serif" },
+  header: { maxWidth: '1200px', margin: '0 auto', padding: '8rem 1.5rem 1rem' },
+  headerTitle: { color: '#14213d', fontSize: '2rem', fontWeight: '700', margin: 0, fontFamily: 'Outfit, sans-serif' },
+  headerSub: { color: '#888', margin: '0.4rem 0 0' },
   layout: {
     maxWidth: '1200px', margin: '0 auto', padding: '1.5rem',
     display: 'grid', gridTemplateColumns: '260px 1fr', gap: '2rem', alignItems: 'start',
   },
   sidebar: {
-    background: '#11172a', border: '1px solid rgba(255,255,255,0.08)',
-    borderRadius: '14px', padding: '1.5rem', position: 'sticky', top: '90px',
+    background: '#fff', border: '1px solid rgba(0,0,0,0.06)',
+    borderRadius: '14px', padding: '1.5rem', position: 'sticky', top: '110px',
+    boxShadow: '0 4px 20px rgba(0,0,0,0.04)',
   },
-  filterTitle: { color: '#fff', fontSize: '1.1rem', fontWeight: '600', margin: '0 0 1rem' },
-  label: {
-    color: 'rgba(255,255,255,0.6)', fontSize: '0.8rem', fontWeight: '500',
-    display: 'block', margin: '0.9rem 0 0.4rem',
-  },
+  filterTitle: { color: '#14213d', fontSize: '1.1rem', fontWeight: '600', margin: '0 0 1rem' },
+  label: { color: '#555', fontSize: '0.8rem', fontWeight: '500', display: 'block', margin: '0.9rem 0 0.4rem' },
   input: {
-    width: '100%', background: '#0d1220', border: '1px solid rgba(255,255,255,0.12)',
-    borderRadius: '8px', padding: '0.6rem 0.7rem', color: '#fff', fontSize: '0.85rem',
+    width: '100%', background: '#f7f7fa', border: '1px solid #e0e0e6',
+    borderRadius: '8px', padding: '0.6rem 0.7rem', color: '#14213d', fontSize: '0.85rem',
     outline: 'none', boxSizing: 'border-box',
   },
   row: { display: 'flex', gap: '0.5rem' },
   applyBtn: {
-    width: '100%', background: '#DC143C', color: '#fff', border: 'none',
+    width: '100%', background: '#60A5FA', color: '#fff', border: 'none',
     borderRadius: '8px', padding: '0.7rem', fontWeight: '600', cursor: 'pointer',
     marginTop: '1.2rem', fontSize: '0.9rem',
   },
   resetBtn: {
-    width: '100%', background: 'transparent', color: 'rgba(255,255,255,0.6)',
-    border: '1px solid rgba(255,255,255,0.15)', borderRadius: '8px', padding: '0.6rem',
+    width: '100%', background: 'transparent', color: '#666',
+    border: '1px solid #ddd', borderRadius: '8px', padding: '0.6rem',
     cursor: 'pointer', marginTop: '0.6rem', fontSize: '0.85rem',
   },
   results: { minHeight: '400px' },
-  grid: {
-    display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '1.5rem',
-  },
-  message: { color: 'rgba(255,255,255,0.5)', textAlign: 'center', padding: '4rem 1rem' },
-  errorMsg: { color: '#ff6b6b', textAlign: 'center', padding: '4rem 1rem' },
+  grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '1.5rem' },
+  message: { color: '#888', textAlign: 'center', padding: '4rem 1rem' },
+  errorMsg: { color: '#c1121f', textAlign: 'center', padding: '4rem 1rem' },
 };
 
 export default Vehicles;

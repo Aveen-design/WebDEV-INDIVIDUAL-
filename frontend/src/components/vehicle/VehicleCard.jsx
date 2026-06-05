@@ -14,9 +14,7 @@ const VehicleCard = ({ vehicle }) => {
 
       <div style={styles.body}>
         <h3 style={styles.title}>{vehicle.title}</h3>
-        <p style={styles.meta}>
-          {vehicle.brand} · {vehicle.year} · {vehicle.seats} seats
-        </p>
+        <p style={styles.meta}>{vehicle.brand} · {vehicle.year} · {vehicle.seats} seats</p>
         <p style={styles.location}>📍 {vehicle.location}</p>
 
         <div style={styles.footer}>
@@ -33,34 +31,33 @@ const VehicleCard = ({ vehicle }) => {
 
 const styles = {
   card: {
-    background: '#11172a', border: '1px solid rgba(255,255,255,0.08)',
+    background: '#fff', border: '1px solid rgba(0,0,0,0.06)',
     borderRadius: '14px', overflow: 'hidden', textDecoration: 'none',
-    display: 'flex', flexDirection: 'column', transition: 'transform 0.15s',
+    display: 'flex', flexDirection: 'column', boxShadow: '0 4px 20px rgba(0,0,0,0.04)',
   },
   imageWrap: {
-    position: 'relative', height: '180px', background: '#0d1220',
+    position: 'relative', height: '180px', background: '#f0f0f5',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
   },
   image: { width: '100%', height: '100%', objectFit: 'cover' },
-  placeholder: { fontSize: '4rem', opacity: 0.4 },
+  placeholder: { fontSize: '4rem', opacity: 0.3 },
   typeBadge: {
     position: 'absolute', top: '10px', left: '10px',
-    background: 'rgba(220,20,60,0.9)', color: '#fff', fontSize: '0.7rem',
-    fontWeight: '600', padding: '0.25rem 0.7rem', borderRadius: '20px',
-    textTransform: 'capitalize',
+    background: '#60A5FA', color: '#fff', fontSize: '0.7rem',
+    fontWeight: '600', padding: '0.25rem 0.7rem', borderRadius: '20px', textTransform: 'capitalize',
   },
   body: { padding: '1rem 1.1rem 1.2rem' },
   title: {
-    color: '#fff', fontSize: '1.05rem', fontWeight: '600',
+    color: '#14213d', fontSize: '1.05rem', fontWeight: '600',
     margin: '0 0 0.3rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
   },
-  meta: { color: 'rgba(255,255,255,0.5)', fontSize: '0.8rem', margin: '0 0 0.4rem' },
-  location: { color: 'rgba(255,255,255,0.6)', fontSize: '0.82rem', margin: '0 0 0.9rem' },
+  meta: { color: '#888', fontSize: '0.8rem', margin: '0 0 0.4rem' },
+  location: { color: '#666', fontSize: '0.82rem', margin: '0 0 0.9rem' },
   footer: { display: 'flex', alignItems: 'center', justifyContent: 'space-between' },
-  price: { color: '#DC143C', fontSize: '1.2rem', fontWeight: '700' },
-  perDay: { color: 'rgba(255,255,255,0.4)', fontSize: '0.8rem' },
+  price: { color: '#3B82F6', fontSize: '1.2rem', fontWeight: '700' },
+  perDay: { color: '#aaa', fontSize: '0.8rem' },
   driverTag: {
-    background: 'rgba(56,120,255,0.15)', color: '#6ea8ff',
+    background: 'rgba(96,165,250,0.15)', color: '#3B82F6',
     fontSize: '0.7rem', padding: '0.2rem 0.6rem', borderRadius: '12px',
   },
 };

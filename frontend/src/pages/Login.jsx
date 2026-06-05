@@ -202,7 +202,7 @@ const styles = {
     marginBottom: '1.5rem',
   },
   brandText:   { color: '#14213d' },
-  brandAccent: { color: '#e63946' },
+  brandAccent: { color: '#60A5FA' },
   heading: {
     fontSize:   '1.9rem',
     fontWeight: '700',
@@ -250,7 +250,7 @@ const styles = {
     boxSizing:    'border-box',
   },
   button: {
-    background:   '#e63946',
+    background:   '#60A5FA',
     color:        '#fff',
     border:       'none',
     borderRadius: '10px',
@@ -268,7 +268,7 @@ const styles = {
     marginTop: '1.5rem',
   },
   link: {
-    color:          '#e63946',
+    color:          '#60A5FA',
     textDecoration: 'none',
     fontWeight:     '600',
   },
