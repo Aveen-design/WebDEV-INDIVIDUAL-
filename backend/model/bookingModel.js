@@ -106,7 +106,7 @@ const getBookingOwnerAndCustomer = async (id) => {
 };
 
 module.exports = {
- checkConflict,
+  checkConflict,
   createBooking,
   getBookingsByCustomer,
   getBookingById,

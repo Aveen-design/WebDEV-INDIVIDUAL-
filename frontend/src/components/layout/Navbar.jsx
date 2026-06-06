@@ -1,5 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import NotificationBell from '../NotificationBell';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
@@ -28,6 +29,8 @@ const Navbar = () => {
         <div style={styles.authArea}>
           {user ? (
             <>
+                          <NotificationBell />
+
               <Link to="/dashboard" style={styles.dashLink}>
                 {user.full_name?.split(' ')[0] || 'Dashboard'}
               </Link>

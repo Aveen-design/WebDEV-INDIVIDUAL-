@@ -55,7 +55,6 @@ const Register = () => {
     <div style={styles.page}>
       <div style={styles.container}>
 
-        {/* LEFT — visual panel */}
         <div style={styles.visualPanel}>
           <div style={styles.visualTop}>
             <Link to="/" style={styles.visualLink}>Browse fleet</Link>
@@ -68,7 +67,6 @@ const Register = () => {
           </div>
         </div>
 
-        {}
         <div style={styles.formPanel}>
           <div style={styles.brand}>
             <span style={styles.brandText}>Drive</span>
@@ -134,6 +132,17 @@ const Register = () => {
             </button>
           </form>
 
+          <div style={styles.divider}>
+            <div style={styles.dividerLine} />
+            <span style={styles.dividerText}>or</span>
+            <div style={styles.dividerLine} />
+          </div>
+
+          <a href="http://localhost:8000/api/auth/google" style={styles.googleBtn}>
+            <img src="https://www.google.com/favicon.ico" alt="" style={styles.googleIcon} />
+            Sign up with Google
+          </a>
+
           <p style={styles.footerText}>
             Already have an account?{' '}
             <Link to="/login" style={styles.link}>Sign in</Link>
@@ -149,7 +158,7 @@ const styles = {
   page: {
     minHeight: '100vh', background: '#f0f0f3', display: 'flex',
     alignItems: 'center', justifyContent: 'center', padding: '2rem',
-    fontFamily: "'Segoe UI', sans-serif",
+    fontFamily: "'Inter', sans-serif",
   },
   container: {
     display: 'flex', width: '100%', maxWidth: '960px', minHeight: '620px',
@@ -161,10 +170,7 @@ const styles = {
     padding: '2rem', display: 'flex', flexDirection: 'column',
     justifyContent: 'space-between', position: 'relative', overflow: 'hidden',
   },
-  visualTop: {
-    display: 'flex', alignItems: 'center', justifyContent: 'flex-end',
-    gap: '14px', zIndex: 2,
-  },
+  visualTop: { display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '14px', zIndex: 2 },
   visualLink: { color: 'rgba(255,255,255,0.75)', fontSize: '0.85rem', textDecoration: 'none' },
   visualBtn: {
     border: '1px solid rgba(255,255,255,0.4)', color: '#fff', fontSize: '0.85rem',
@@ -204,6 +210,15 @@ const styles = {
     padding: '0.85rem', fontSize: '1rem', fontWeight: '600', cursor: 'pointer',
     marginTop: '0.5rem', width: '100%',
   },
+  divider: { display: 'flex', alignItems: 'center', gap: '0.6rem', margin: '1.2rem 0' },
+  dividerLine: { flex: 1, height: '1px', background: '#e0e0e6' },
+  dividerText: { color: '#999', fontSize: '0.8rem' },
+  googleBtn: {
+    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.6rem',
+    background: '#fff', border: '1px solid #e0e0e6', borderRadius: '10px',
+    padding: '0.75rem', textDecoration: 'none', color: '#14213d', fontWeight: '500', fontSize: '0.9rem',
+  },
+  googleIcon: { width: '18px', height: '18px' },
   footerText: { textAlign: 'center', color: '#888', fontSize: '0.875rem', marginTop: '1.25rem' },
   link: { color: '#60A5FA', textDecoration: 'none', fontWeight: '600' },
 };

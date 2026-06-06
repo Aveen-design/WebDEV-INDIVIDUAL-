@@ -11,6 +11,7 @@ const VehicleDetail = () => {
   const { user } = useAuth();
 
   const [vehicle, setVehicle] = useState(null);
+  const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error,   setError]   = useState('');
 
@@ -20,6 +21,8 @@ const VehicleDetail = () => {
       try {
         const res = await api.get(`/vehicles/${id}`);
         setVehicle(res.data.data);
+        const rev = await api.get(`/reviews/vehicle/${id}`);
+        setReviews(rev.data.data);
       } catch (err) {
         setError(err.response?.status === 404 ? 'Vehicle not found.' : 'Could not load this vehicle.');
       } finally {
@@ -94,6 +97,31 @@ const VehicleDetail = () => {
                 <p style={styles.ownerName}>{vehicle.owner_name}</p>
               </div>
             </div>
+
+            <div style={{ marginTop: '1.5rem' }}>
+              <h3 style={styles.descTitle}>
+                Reviews {reviews.length > 0 && `(${reviews.length})`}
+              </h3>
+              {reviews.length === 0 ? (
+                <p style={styles.descText}>No reviews yet.</p>
+              ) : (
+                reviews.map((r) => (
+                  <div key={r.id} style={styles.reviewCard}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <strong style={{ color: '#14213d', fontSize: '0.9rem' }}>{r.reviewer_name}</strong>
+                      <span style={{ color: '#f5a623' }}>{'★'.repeat(r.rating)}{'☆'.repeat(5 - r.rating)}</span>
+                    </div>
+                    {r.comment && <p style={{ color: '#555', fontSize: '0.88rem', margin: '0.5rem 0 0' }}>{r.comment}</p>}
+                    {r.owner_reply && (
+                      <div style={styles.ownerReply}>
+                        <span style={{ color: '#888', fontSize: '0.78rem' }}>Owner reply:</span>
+                        <p style={{ color: '#555', fontSize: '0.85rem', margin: '0.2rem 0 0' }}>{r.owner_reply}</p>
+                      </div>
+                    )}
+                  </div>
+                ))
+              )}
+            </div>
           </div>
 
           <aside style={styles.bookBox}>
@@ -101,6 +129,12 @@ const VehicleDetail = () => {
               <span style={styles.price}>Rs {Number(vehicle.daily_rate).toLocaleString()}</span>
               <span style={styles.perDay}>/ day</span>
             </div>
+
+            {vehicle.average_rating > 0 && (
+              <p style={styles.ratingLine}>
+                ★ {Number(vehicle.average_rating).toFixed(1)} ({vehicle.total_reviews} reviews)
+              </p>
+            )}
 
             {vehicle.has_driver && (
               <p style={styles.driverInfo}>Driver available: +Rs {Number(vehicle.driver_rate).toLocaleString()}/day</p>
@@ -173,6 +207,13 @@ const styles = {
   },
   ownerLabel: { color: '#999', fontSize: '0.75rem', margin: 0 },
   ownerName: { color: '#14213d', fontSize: '1rem', fontWeight: '600', margin: '0.1rem 0 0' },
+  reviewCard: {
+    background: '#fff', border: '1px solid rgba(0,0,0,0.06)',
+    borderRadius: '10px', padding: '1rem', marginBottom: '0.8rem',
+  },
+  ownerReply: {
+    background: '#f7f7fa', borderRadius: '8px', padding: '0.6rem 0.8rem', marginTop: '0.6rem',
+  },
   bookBox: {
     background: '#fff', border: '1px solid rgba(0,0,0,0.08)', borderRadius: '16px',
     padding: '1.5rem', position: 'sticky', top: '110px', boxShadow: '0 4px 20px rgba(0,0,0,0.05)',
@@ -180,6 +221,7 @@ const styles = {
   priceRow: { display: 'flex', alignItems: 'baseline', gap: '0.4rem' },
   price: { color: '#14213d', fontSize: '1.8rem', fontWeight: '800' },
   perDay: { color: '#999', fontSize: '0.9rem' },
+  ratingLine: { color: '#f5a623', fontSize: '0.88rem', fontWeight: '600', margin: '0.5rem 0 0' },
   driverInfo: { color: '#3B82F6', fontSize: '0.85rem', margin: '0.5rem 0 1rem' },
   optionRow: { display: 'flex', justifyContent: 'space-between', padding: '0.6rem 0', borderTop: '1px solid rgba(0,0,0,0.06)' },
   optLabel: { color: '#666', fontSize: '0.9rem' },

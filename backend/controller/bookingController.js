@@ -1,6 +1,7 @@
 const bookingModel = require('../model/bookingModel');
 
 const PLATFORM_FEE_PERCENT = parseFloat(process.env.PLATFORM_FEE_PERCENT) || 5;
+const notificationModel = require('../model/notificationModel');
 
 const generateReference = () => {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -88,6 +89,12 @@ const createBooking = async (req, res) => {
       pickup_location, customer_note,
       reference_code: generateReference(),
     });
+    await notificationModel.createNotification({
+      user_id: vehicle.owner_id,
+      type: 'booking',
+      title: 'New booking request',
+      body: `You have a new booking request (${booking.reference_code}).`,
+    }).catch(() => {});
 
     res.status(201).json({
       success: true,

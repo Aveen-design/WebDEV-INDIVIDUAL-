@@ -60,7 +60,32 @@ const updatePassword = async (email, passwordHash) => {
   );
 };
 
-module.exports = { findUserByEmail, findUserById, createUser,saveOtp,
+const findUserByGoogleId = async (googleId) => {
+  const result = await db.query('SELECT * FROM users WHERE google_id = $1', [googleId]);
+  return result.rows[0];
+};
+
+const createGoogleUser = async ({ full_name, email, google_id, avatar_url, role }) => {
+  const result = await db.query(
+    `INSERT INTO users (full_name, email, google_id, avatar_url, role, is_verified)
+     VALUES ($1, $2, $3, $4, $5, true)
+     RETURNING id, full_name, email, role, avatar_url, is_verified`,
+    [full_name, email, google_id, avatar_url, role || 'customer']
+  );
+  return result.rows[0];
+};
+
+const linkGoogleId = async (userId, googleId) => {
+  await db.query('UPDATE users SET google_id = $1 WHERE id = $2', [googleId, userId]);
+};
+
+module.exports = { findUserByEmail,
+  findUserById,
+  createUser,
+  saveOtp,
   findValidOtp,
   markOtpUsed,
-  updatePassword, };
+  updatePassword,
+  findUserByGoogleId,
+  createGoogleUser,
+  linkGoogleId,};

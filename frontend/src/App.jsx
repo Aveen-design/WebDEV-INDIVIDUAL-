@@ -11,6 +11,9 @@ import BookVehicle from './pages/BookVehicle';
 import Dashboard from './pages/Dashboard';
 import OwnerVehicles from './pages/OwnerVehicles';
 import AddVehicle from './pages/AddVehicle';
+import OAuthCallback from './pages/OAuthCallback';
+import ChooseRole from './pages/ChooseRole';
+import Messages from './pages/Messages';
 
 const About     = () => <div style={{padding:'2rem'}}>About page</div>;
 const Contact   = () => <div style={{padding:'2rem'}}>Contact page</div>;
@@ -43,6 +46,9 @@ const App = () => {
       <Route path="/vehicles/:id/book" element={<ProtectedRoute><BookVehicle /></ProtectedRoute>} />
       <Route path="/owner/vehicles"     element={<ProtectedRoute><OwnerVehicles /></ProtectedRoute>} />
       <Route path="/owner/vehicles/new" element={<ProtectedRoute><AddVehicle /></ProtectedRoute>} />
+      <Route path="/oauth-callback" element={<OAuthCallback />} />
+      <Route path="/choose-role" element={<ChooseRole />} />
+      <Route path="/messages/:bookingId" element={<ProtectedRoute><Messages /></ProtectedRoute>} />
     </Routes>
   );
 };

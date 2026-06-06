@@ -3,6 +3,7 @@ import { useLocation, Link } from 'react-router-dom';
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
 import { useAuth } from '../context/AuthContext';
+import ReviewForm from '../components/ReviewForm';
 import api from '../utils/api';
 
 const STATUS_COLORS = {
@@ -30,9 +31,10 @@ const Dashboard = () => {
   const location = useLocation();
   const isOwner = user?.role === 'owner';
 
-  const [bookings, setBookings] = useState([]);
-  const [loading, setLoading]   = useState(true);
-  const [actionMsg, setActionMsg] = useState('');
+  const [bookings, setBookings]       = useState([]);
+  const [loading, setLoading]         = useState(true);
+  const [actionMsg, setActionMsg]     = useState('');
+  const [reviewingId, setReviewingId] = useState(null);
 
   const successRef = location.state?.bookingSuccess;
 
@@ -125,6 +127,13 @@ const Dashboard = () => {
                     {isOwner && b.customer_phone && <Detail label="Phone" value={b.customer_phone} />}
                   </div>
 
+                  <div style={{ marginTop: '0.8rem' }}>
+                    <Link to={`/messages/${b.id}`}
+                      style={{ ...styles.messageBtn, textDecoration: 'none', display: 'inline-block' }}>
+                      Message {isOwner ? 'Customer' : 'Owner'}
+                    </Link>
+                  </div>
+
                   {actions.length > 0 && (
                     <div style={styles.actions}>
                       {actions.map(([status, label]) => (
@@ -133,6 +142,18 @@ const Dashboard = () => {
                           {label}
                         </button>
                       ))}
+                    </div>
+                  )}
+
+                  {!isOwner && b.status === 'completed' && (
+                    <div style={{ marginTop: '1rem', borderTop: '1px solid rgba(0,0,0,0.06)', paddingTop: '0.5rem' }}>
+                      {reviewingId === b.id ? (
+                        <ReviewForm bookingId={b.id} onSuccess={() => { setReviewingId(null); setActionMsg('Thanks for your review!'); fetchBookings(); }} />
+                      ) : (
+                        <button onClick={() => setReviewingId(b.id)} style={styles.actionBtn}>
+                          Leave a Review
+                        </button>
+                      )}
                     </div>
                   )}
                 </div>
@@ -193,6 +214,10 @@ const styles = {
   },
   detailLabel: { display: 'block', color: '#999', fontSize: '0.72rem', marginBottom: '0.15rem' },
   detailValue: { color: '#14213d', fontSize: '0.9rem', fontWeight: '600' },
+  messageBtn: {
+    background: '#f0f0f5', color: '#14213d', border: 'none', borderRadius: '8px',
+    padding: '0.5rem 1.1rem', fontSize: '0.85rem', fontWeight: '600',
+  },
   actions: { display: 'flex', gap: '0.6rem', marginTop: '1rem', flexWrap: 'wrap',
     borderTop: '1px solid rgba(0,0,0,0.06)', paddingTop: '1rem' },
   actionBtn: {
