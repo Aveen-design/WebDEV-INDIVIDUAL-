@@ -130,12 +130,16 @@ const getBookedDates = async (vehicleId) => {
   );
   return result.rows;
 };
+const softDeleteVehicle = async (id) => {
+  await db.query('UPDATE vehicles SET is_active = false WHERE id = $1', [id]);
+};
 
 module.exports = {
-  createVehicle,
+    createVehicle,
   searchVehicles,
   getVehicleById,
   getVehiclesByOwner,
   getVehicleOwner,
-  getBookedDates, 
+  getBookedDates,
+  softDeleteVehicle,
 };

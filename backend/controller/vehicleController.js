@@ -132,10 +132,28 @@ const getAvailability = async (req, res) => {
     res.status(500).json({ success: false, message: 'Server error fetching availability' });
   }
 };
+const deleteVehicle = async (req, res) => {
+  try {
+    const owner = await vehicleModel.getVehicleOwner(req.params.id);
+    if (!owner) {
+      return res.status(404).json({ success: false, message: 'Vehicle not found' });
+    }
+    if (owner.owner_id !== req.user.id && req.user.role !== 'admin') {
+      return res.status(403).json({ success: false, message: 'Not your vehicle' });
+    }
+    await vehicleModel.softDeleteVehicle(req.params.id);
+    res.status(200).json({ success: true, message: 'Vehicle removed' });
+  } catch (err) {
+    console.error('Delete vehicle error:', err.message);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+};
+
 module.exports = {
-  createVehicle,
+    createVehicle,
   getVehicles,
   getVehicleById,
   getMyVehicles,
-  getAvailability
+  getAvailability,
+  deleteVehicle,
 };

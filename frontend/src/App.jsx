@@ -9,6 +9,8 @@ import VehicleDetail from './pages/VehicleDetail';
 import ForgotPassword from './pages/ForgotPassword';
 import BookVehicle from './pages/BookVehicle';
 import Dashboard from './pages/Dashboard';
+import OwnerVehicles from './pages/OwnerVehicles';
+import AddVehicle from './pages/AddVehicle';
 
 const About     = () => <div style={{padding:'2rem'}}>About page</div>;
 const Contact   = () => <div style={{padding:'2rem'}}>Contact page</div>;
@@ -39,6 +41,8 @@ const App = () => {
       <Route path="*"          element={<Navigate to="/" replace />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/vehicles/:id/book" element={<ProtectedRoute><BookVehicle /></ProtectedRoute>} />
+      <Route path="/owner/vehicles"     element={<ProtectedRoute><OwnerVehicles /></ProtectedRoute>} />
+      <Route path="/owner/vehicles/new" element={<ProtectedRoute><AddVehicle /></ProtectedRoute>} />
     </Routes>
   );
 };

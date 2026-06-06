@@ -7,6 +7,7 @@ const {
   getVehicleById,
   getMyVehicles,
   getAvailability,
+  deleteVehicle
 
 } = require('../controller/vehicleController');
 
@@ -17,6 +18,7 @@ router.get('/', getVehicles);
 router.get('/owner/my', protect, requireRole('owner'), getMyVehicles);
 
 router.post('/', protect, requireRole('owner'), createVehicle);
+router.delete('/:id', protect, deleteVehicle);
 
 router.get('/:id/availability', getAvailability);
 
