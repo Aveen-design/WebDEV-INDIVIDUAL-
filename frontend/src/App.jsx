@@ -8,8 +8,8 @@ import Vehicles from './pages/Vehicles';
 import VehicleDetail from './pages/VehicleDetail';
 import ForgotPassword from './pages/ForgotPassword';
 import BookVehicle from './pages/BookVehicle';
+import Dashboard from './pages/Dashboard';
 
-const Dashboard = () => <div style={{padding:'2rem'}}>Dashboard (coming soon)</div>;
 const About     = () => <div style={{padding:'2rem'}}>About page</div>;
 const Contact   = () => <div style={{padding:'2rem'}}>Contact page</div>;
 

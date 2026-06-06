@@ -75,10 +75,43 @@ const getVehicleForBooking = async (vehicleId) => {
   return result.rows[0];
 };
 
+const getBookingsByOwner = async (ownerId) => {
+  const result = await db.query(
+    `SELECT b.*, v.title AS vehicle_title, v.type AS vehicle_type,
+            cust.full_name AS customer_name, cust.phone AS customer_phone
+     FROM bookings b
+     JOIN vehicles v ON v.id = b.vehicle_id
+     JOIN users cust ON cust.id = b.customer_id
+     WHERE b.owner_id = $1
+     ORDER BY b.created_at DESC`,
+    [ownerId]
+  );
+  return result.rows;
+};
+
+const updateBookingStatus = async (id, status) => {
+  const result = await db.query(
+    `UPDATE bookings SET status = $1 WHERE id = $2 RETURNING *`,
+    [status, id]
+  );
+  return result.rows[0];
+};
+
+const getBookingOwnerAndCustomer = async (id) => {
+  const result = await db.query(
+    'SELECT owner_id, customer_id, status FROM bookings WHERE id = $1',
+    [id]
+  );
+  return result.rows[0];
+};
+
 module.exports = {
-  checkConflict,
+ checkConflict,
   createBooking,
   getBookingsByCustomer,
   getBookingById,
   getVehicleForBooking,
+  getBookingsByOwner,
+  updateBookingStatus,
+  getBookingOwnerAndCustomer,
 };

@@ -132,4 +132,68 @@ const getBooking = async (req, res) => {
   }
 };
 
-module.exports = { createBooking, getMyBookings, getBooking };
+const getOwnerBookings = async (req, res) => {
+  try {
+    const bookings = await bookingModel.getBookingsByOwner(req.user.id);
+    res.status(200).json({ success: true, count: bookings.length, data: bookings });
+  } catch (err) {
+    console.error('Get owner bookings error:', err.message);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+};
+
+const OWNER_ALLOWED = {
+  pending:     ['confirmed', 'rejected'],
+  confirmed:   ['handed_over', 'cancelled'],
+  handed_over: ['returned'],
+  returned:    ['completed'],
+};
+
+const CUSTOMER_ALLOWED = {
+  pending:   ['cancelled'],
+  confirmed: ['cancelled'],
+};
+
+const updateStatus = async (req, res) => {
+  try {
+    const { status } = req.body;
+    if (!status) {
+      return res.status(400).json({ success: false, message: 'Status is required' });
+    }
+
+    const booking = await bookingModel.getBookingOwnerAndCustomer(req.params.id);
+    if (!booking) {
+      return res.status(404).json({ success: false, message: 'Booking not found' });
+    }
+
+    const isOwner    = booking.owner_id === req.user.id;
+    const isCustomer = booking.customer_id === req.user.id;
+
+    if (!isOwner && !isCustomer) {
+      return res.status(403).json({ success: false, message: 'Not authorised' });
+    }
+
+    const allowedMap = isOwner ? OWNER_ALLOWED : CUSTOMER_ALLOWED;
+    const allowedNext = allowedMap[booking.status] || [];
+
+    if (!allowedNext.includes(status)) {
+      return res.status(400).json({
+        success: false,
+        message: `Cannot change status from '${booking.status}' to '${status}'`,
+      });
+    }
+
+    const updated = await bookingModel.updateBookingStatus(req.params.id, status);
+    res.status(200).json({ success: true, message: 'Status updated', data: updated });
+  } catch (err) {
+    console.error('Update status error:', err.message);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+};
+
+module.exports = { createBooking,
+  getMyBookings,
+  getBooking,
+  getOwnerBookings,
+  updateStatus,
+ };

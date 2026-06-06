@@ -5,12 +5,16 @@ const {
   createBooking,
   getMyBookings,
   getBooking,
+  getOwnerBookings,
+  updateStatus,
 } = require('../controller/bookingController');
 
 const { protect, requireRole } = require('../middleware/authMiddleware');
 
 router.post('/', protect, requireRole('customer'), createBooking);
 router.get('/my', protect, getMyBookings);
+router.get('/owner', protect, requireRole('owner'), getOwnerBookings);
+router.patch('/:id/status', protect, updateStatus);
 router.get('/:id', protect, getBooking);
 
 module.exports = router;
