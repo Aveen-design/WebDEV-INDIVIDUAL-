@@ -119,6 +119,17 @@ const getVehicleOwner = async (id) => {
   const result = await db.query('SELECT owner_id FROM vehicles WHERE id = $1', [id]);
   return result.rows[0];
 };
+const getBookedDates = async (vehicleId) => {
+  const result = await db.query(
+    `SELECT start_date, end_date FROM bookings
+     WHERE vehicle_id = $1
+       AND status NOT IN ('cancelled', 'rejected')
+       AND end_date >= CURRENT_DATE
+     ORDER BY start_date ASC`,
+    [vehicleId]
+  );
+  return result.rows;
+};
 
 module.exports = {
   createVehicle,
@@ -126,4 +137,5 @@ module.exports = {
   getVehicleById,
   getVehiclesByOwner,
   getVehicleOwner,
+  getBookedDates, 
 };

@@ -114,10 +114,28 @@ const getMyVehicles = async (req, res) => {
     res.status(500).json({ success: false, message: 'Server error' });
   }
 };
+const getAvailability = async (req, res) => {
+  try {
+    const vehicle = await vehicleModel.getVehicleById(req.params.id);
+    if (!vehicle) {
+      return res.status(404).json({ success: false, message: 'Vehicle not found' });
+    }
 
+    const booked = await vehicleModel.getBookedDates(req.params.id);
+
+    res.status(200).json({
+      success: true,
+      data: { booked },
+    });
+  } catch (err) {
+    console.error('Get availability error:', err.message);
+    res.status(500).json({ success: false, message: 'Server error fetching availability' });
+  }
+};
 module.exports = {
   createVehicle,
   getVehicles,
   getVehicleById,
   getMyVehicles,
+  getAvailability
 };
