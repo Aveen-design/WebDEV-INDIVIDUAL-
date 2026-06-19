@@ -14,6 +14,7 @@ const VehicleDetail = () => {
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error,   setError]   = useState('');
+  const [photos, setPhotos] = useState([]);
 
   useEffect(() => {
     const fetchVehicle = async () => {
@@ -70,6 +71,14 @@ const VehicleDetail = () => {
               )}
               <span style={styles.typeBadge}>{vehicle.type}</span>
             </div>
+            {vehicle.photos && vehicle.photos.length > 1 && (
+              <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.6rem', flexWrap: 'wrap' }}>
+                {vehicle.photos.map((p) => (
+                  <img key={p.id} src={p.url} alt=""
+                    style={{ width: '80px', height: '60px', objectFit: 'cover', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.08)' }} />
+                ))}
+              </div>
+            )}
 
             <h1 style={styles.title}>{vehicle.title}</h1>
             <p style={styles.location}>📍 {vehicle.location}</p>

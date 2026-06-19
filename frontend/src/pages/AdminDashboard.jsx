@@ -8,6 +8,7 @@ const AdminDashboard = () => {
   const [pending, setPending] = useState([]);
   const [users, setUsers] = useState([]);
   const [bookings, setBookings] = useState([]);
+  const [disputes, setDisputes] = useState([]);
   const [msg, setMsg] = useState('');
 
   const loadStats = async () => {
@@ -22,6 +23,9 @@ const AdminDashboard = () => {
   const loadBookings = async () => {
     try { const r = await api.get('/admin/bookings'); setBookings(r.data.data); } catch {}
   };
+  const loadDisputes = async () => {
+    try { const r = await api.get('/disputes'); setDisputes(r.data.data); } catch {}
+  };
 
   useEffect(() => {
     loadStats();
@@ -32,6 +36,7 @@ const AdminDashboard = () => {
     if (tab === 'users') loadUsers();
     if (tab === 'bookings') loadBookings();
     if (tab === 'pending') loadPending();
+    if (tab === 'disputes') loadDisputes();
   }, [tab]);
 
   const review = async (id, status) => {
@@ -48,6 +53,16 @@ const AdminDashboard = () => {
       await api.patch(`/admin/users/${id}/toggle`, { is_active: !isActive });
       loadUsers();
     } catch { setMsg('Could not update user.'); }
+  };
+
+  const resolveDispute = async (id) => {
+    const resolution = window.prompt('Enter your resolution:');
+    if (!resolution) return;
+    try {
+      await api.patch(`/disputes/${id}/resolve`, { resolution, status: 'resolved' });
+      setMsg('Dispute resolved.');
+      loadDisputes();
+    } catch { setMsg('Could not resolve.'); }
   };
 
   return (
@@ -69,10 +84,11 @@ const AdminDashboard = () => {
         {msg && <div style={styles.msg}>{msg}</div>}
 
         <div style={styles.tabs}>
-          {['pending', 'users', 'bookings'].map((t) => (
+          {['pending', 'users', 'bookings', 'disputes'].map((t) => (
             <button key={t} onClick={() => setTab(t)}
               style={{ ...styles.tab, ...(tab === t ? styles.tabActive : {}) }}>
-              {t === 'pending' ? 'Pending Listings' : t === 'users' ? 'Users' : 'All Bookings'}
+              {t === 'pending' ? 'Pending Listings' : t === 'users' ? 'Users'
+                : t === 'bookings' ? 'All Bookings' : 'Disputes'}
             </button>
           ))}
         </div>
@@ -127,6 +143,26 @@ const AdminDashboard = () => {
                 </div>
               </div>
             ))}
+          </div>
+        )}
+
+        {tab === 'disputes' && (
+          <div style={styles.list}>
+            {disputes.length === 0 ? <p style={styles.empty}>No disputes.</p> :
+              disputes.map((d) => (
+                <div key={d.id} style={styles.card}>
+                  <div>
+                    <h3 style={styles.cardTitle}>{d.vehicle_title} <span style={styles.ref}>({d.reference_code})</span></h3>
+                    <p style={styles.cardMeta}>Raised by {d.raised_by_name}: {d.reason}</p>
+                    {d.resolution && <p style={{ color: '#1e7e44', fontSize: '0.82rem', margin: '0.3rem 0 0' }}>Resolution: {d.resolution}</p>}
+                  </div>
+                  {d.status === 'open' ? (
+                    <button onClick={() => resolveDispute(d.id)} style={styles.approveBtn}>Resolve</button>
+                  ) : (
+                    <span style={styles.statusTag}>{d.status}</span>
+                  )}
+                </div>
+              ))}
           </div>
         )}
       </div>

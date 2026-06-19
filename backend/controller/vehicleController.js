@@ -31,12 +31,20 @@ const createVehicle = async (req, res) => {
     }
 
     const vehicle = await vehicleModel.createVehicle({
-      owner_id: req.user.id,   // comes from auth middleware
+      owner_id: req.user.id,
       title, type, brand, model, year,
       transmission, fuel_type, seats,
-      daily_rate, driver_rate, has_driver, driver_only,
+      daily_rate, driver_rate,
+      has_driver: has_driver === 'true' || has_driver === true,
+      driver_only: driver_only === 'true' || driver_only === true,
       location, description,
     });
+
+    if (req.files && req.files.length > 0) {
+      for (let i = 0; i < req.files.length; i++) {
+        await vehicleModel.addPhoto(vehicle.id, req.files[i].path, i === 0, i);
+      }
+    }
 
     res.status(201).json({
       success: true,
@@ -114,6 +122,7 @@ const getMyVehicles = async (req, res) => {
     res.status(500).json({ success: false, message: 'Server error' });
   }
 };
+
 const getAvailability = async (req, res) => {
   try {
     const vehicle = await vehicleModel.getVehicleById(req.params.id);
@@ -132,6 +141,7 @@ const getAvailability = async (req, res) => {
     res.status(500).json({ success: false, message: 'Server error fetching availability' });
   }
 };
+
 const deleteVehicle = async (req, res) => {
   try {
     const owner = await vehicleModel.getVehicleOwner(req.params.id);
@@ -150,7 +160,7 @@ const deleteVehicle = async (req, res) => {
 };
 
 module.exports = {
-    createVehicle,
+  createVehicle,
   getVehicles,
   getVehicleById,
   getMyVehicles,

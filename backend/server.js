@@ -16,6 +16,7 @@ const reviewRoute = require('./route/reviewRoute');
 const messageRoute = require('./route/messageRoute');
 const notificationRoute = require('./route/notificationRoute');
 const adminRoute = require('./route/adminRoute');
+const disputeRoute = require('./route/disputeRoute');
 
 app.use(cors());
 app.use(express.json());
@@ -41,6 +42,7 @@ app.use('/api/reviews', reviewRoute);
 app.use('/api/messages', messageRoute);
 app.use('/api/notifications', notificationRoute);
 app.use('/api/admin', adminRoute);
+app.use('/api/disputes', disputeRoute);
 
 const seedAdmin = async () => {
   const bcrypt = require('bcryptjs');

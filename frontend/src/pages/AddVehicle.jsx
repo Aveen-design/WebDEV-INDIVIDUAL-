@@ -17,14 +17,18 @@ const AddVehicle = () => {
   });
   const [error, setError]     = useState('');
   const [loading, setLoading] = useState(false);
+  const [photos, setPhotos] = useState([]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setForm({ ...form, [name]: type === 'checkbox' ? checked : value });
     setError('');
   };
+  const handlePhotos = (e) => {
+    setPhotos(Array.from(e.target.files));
+  };
 
-  const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
@@ -34,12 +38,26 @@ const AddVehicle = () => {
 
     setLoading(true);
     try {
-      await api.post('/vehicles', {
-        ...form,
-        year: Number(form.year),
-        seats: Number(form.seats),
-        daily_rate: Number(form.daily_rate),
-        driver_rate: Number(form.driver_rate) || 0,
+      const data = new FormData();
+      data.append('title', form.title);
+      data.append('type', form.type);
+      data.append('brand', form.brand);
+      data.append('model', form.model);
+      data.append('year', Number(form.year));
+      data.append('transmission', form.transmission);
+      data.append('fuel_type', form.fuel_type);
+      data.append('seats', Number(form.seats));
+      data.append('daily_rate', Number(form.daily_rate));
+      data.append('driver_rate', Number(form.driver_rate) || 0);
+      data.append('has_driver', form.has_driver);
+      data.append('driver_only', form.driver_only);
+      data.append('location', form.location);
+      data.append('description', form.description);
+
+      photos.forEach((file) => data.append('photos', file));
+
+      await api.post('/vehicles', data, {
+        headers: { 'Content-Type': 'multipart/form-data' },
       });
       navigate('/owner/vehicles', { state: { added: true } });
     } catch (err) {
@@ -137,7 +155,15 @@ const AddVehicle = () => {
               <span>Only available with a driver (no self-drive)</span>
             </label>
           </div>
-
+  <Field label="Photos (first one is the cover, up to 6)">
+            <input type="file" accept="image/*" multiple onChange={handlePhotos}
+              style={{ ...styles.input, padding: '0.5rem' }} />
+            {photos.length > 0 && (
+              <p style={{ color: '#888', fontSize: '0.8rem', margin: '0.4rem 0 0' }}>
+                {photos.length} photo(s) selected
+              </p>
+            )}
+          </Field>
           <Field label="Description">
             <textarea name="description" rows={4} value={form.description} onChange={handleChange}
               placeholder="Describe the vehicle, its condition, and any special features."

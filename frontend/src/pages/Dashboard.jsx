@@ -35,6 +35,8 @@ const Dashboard = () => {
   const [loading, setLoading]         = useState(true);
   const [actionMsg, setActionMsg]     = useState('');
   const [reviewingId, setReviewingId] = useState(null);
+  const [disputingId, setDisputingId] = useState(null);
+  const [disputeText, setDisputeText] = useState('');
 
   const successRef = location.state?.bookingSuccess;
 
@@ -60,6 +62,18 @@ const Dashboard = () => {
       fetchBookings();
     } catch (err) {
       setActionMsg(err.response?.data?.message || 'Could not update status.');
+    }
+  };
+
+  const submitDispute = async (bookingId) => {
+    if (!disputeText.trim()) return;
+    try {
+      await api.post('/disputes', { booking_id: bookingId, reason: disputeText });
+      setActionMsg('Dispute submitted for admin review.');
+      setDisputingId(null);
+      setDisputeText('');
+    } catch (err) {
+      setActionMsg(err.response?.data?.message || 'Could not submit dispute.');
     }
   };
 
@@ -152,6 +166,31 @@ const Dashboard = () => {
                       ) : (
                         <button onClick={() => setReviewingId(b.id)} style={styles.actionBtn}>
                           Leave a Review
+                        </button>
+                      )}
+                    </div>
+                  )}
+
+                  {['handed_over', 'returned', 'completed'].includes(b.status) && (
+                    <div style={{ marginTop: '0.8rem' }}>
+                      {disputingId === b.id ? (
+                        <div>
+                          <textarea value={disputeText} onChange={(e) => setDisputeText(e.target.value)}
+                            placeholder="Describe the issue..." rows={2}
+                            style={{ width: '100%', background: '#f7f7fa', border: '1px solid #e0e0e6',
+                              borderRadius: '8px', padding: '0.6rem', fontSize: '0.85rem',
+                              fontFamily: 'inherit', resize: 'vertical', boxSizing: 'border-box', marginBottom: '0.5rem' }} />
+                          <div style={{ display: 'flex', gap: '0.5rem' }}>
+                            <button onClick={() => submitDispute(b.id)} style={styles.dangerBtn}>Submit Dispute</button>
+                            <button onClick={() => { setDisputingId(null); setDisputeText(''); }}
+                              style={{ ...styles.messageBtn, border: 'none', cursor: 'pointer' }}>Cancel</button>
+                          </div>
+                        </div>
+                      ) : (
+                        <button onClick={() => setDisputingId(b.id)}
+                          style={{ background: 'transparent', border: 'none', color: '#cf1322',
+                            fontSize: '0.8rem', cursor: 'pointer', padding: 0, textDecoration: 'underline' }}>
+                          Raise a dispute
                         </button>
                       )}
                     </div>

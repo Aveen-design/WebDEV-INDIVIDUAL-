@@ -133,6 +133,12 @@ const getBookedDates = async (vehicleId) => {
 const softDeleteVehicle = async (id) => {
   await db.query('UPDATE vehicles SET is_active = false WHERE id = $1', [id]);
 };
+const addPhoto = async (vehicleId, url, isPrimary, orderIndex) => {
+  await db.query(
+    'INSERT INTO vehicle_photos (vehicle_id, url, is_primary, order_index) VALUES ($1, $2, $3, $4)',
+    [vehicleId, url, isPrimary, orderIndex]
+  );
+};
 
 module.exports = {
     createVehicle,
@@ -142,4 +148,6 @@ module.exports = {
   getVehicleOwner,
   getBookedDates,
   softDeleteVehicle,
+  addPhoto,
+
 };
