@@ -43,30 +43,6 @@ const Home = () => {
         <div style={styles.cornerRight}>nepal vehicle rental</div>
       </section>
 
-      <section style={styles.section}>
-        <h2 style={styles.sectionTitle}>How DriveNepal Works</h2>
-        <p style={styles.sectionSub}>Renting a vehicle has never been simpler</p>
-        <div style={styles.cards}>
-          {[
-            { icon: '🔍', title: 'Search & Filter', desc: 'Find vehicles by location, type, price, and driver preference.' },
-            { icon: '📅', title: 'Book Instantly', desc: 'Pick dates, see the price breakdown, and confirm in minutes.' },
-            { icon: '🚗', title: 'Drive Away', desc: 'Pick up your vehicle or get a driver — your journey, your way.' },
-          ].map((c) => (
-            <div key={c.title} style={styles.card}>
-              <div style={styles.cardIcon}>{c.icon}</div>
-              <h3 style={styles.cardTitle}>{c.title}</h3>
-              <p style={styles.cardDesc}>{c.desc}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section style={styles.cta}>
-        <h2 style={styles.ctaTitle}>Ready to hit the road?</h2>
-        <p style={styles.ctaSub}>Join thousands of renters across Nepal today.</p>
-        <Link to="/register" style={styles.ctaBtn}>Get Started Free</Link>
-      </section>
-
       <Footer />
     </div>
   );

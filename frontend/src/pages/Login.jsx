@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../utils/api';
+import driveNepalImg from '../assets/drivenepal.png';
 
 const Login = () => {
   const navigate  = useNavigate();
@@ -41,23 +42,14 @@ const Login = () => {
       <div style={styles.container}>
 
         <div style={styles.visualPanel}>
+          <div style={styles.visualOverlay} />
           <div style={styles.visualTop}>
             <Link to="/" style={styles.visualLink}>Browse fleet</Link>
             <Link to="/register" style={styles.visualBtn}>Sign up</Link>
           </div>
-          <div style={styles.visualIcon}>🚗</div>
-          <div style={styles.visualBottom}>
-            <p style={styles.visualCity}>Kathmandu · Pokhara · Chitwan</p>
-            <p style={styles.visualSub}>300+ verified vehicles ready to book</p>
-          </div>
         </div>
 
         <div style={styles.formPanel}>
-          <div style={styles.brand}>
-            <span style={styles.brandText}>Drive</span>
-            <span style={styles.brandAccent}>Nepal</span>
-          </div>
-
           <h2 style={styles.heading}>Welcome back</h2>
           <p style={styles.subheading}>Sign in to manage your bookings</p>
 
@@ -139,30 +131,35 @@ const styles = {
     boxShadow: '0 20px 60px rgba(0,0,0,0.12)',
   },
   visualPanel: {
-    flex: 1, background: 'linear-gradient(160deg, #14213d 0%, #1d3557 100%)',
-    padding: '2rem', display: 'flex', flexDirection: 'column',
-    justifyContent: 'space-between', position: 'relative', overflow: 'hidden',
+    flex: 1,
+    backgroundImage: `url(${driveNepalImg})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    padding: '2rem',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    position: 'relative',
+    overflow: 'hidden',
   },
-  visualTop: { display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '14px', zIndex: 2 },
+  visualOverlay: {
+    position: 'absolute',
+    inset: 0,
+    background: 'linear-gradient(160deg, rgba(20,33,61,0.75) 0%, rgba(29,53,87,0.65) 100%)',
+  },
+  visualTop: { display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '14px', zIndex: 2, position: 'relative' },
   visualLink: { color: 'rgba(255,255,255,0.75)', fontSize: '0.85rem', textDecoration: 'none' },
   visualBtn: {
     border: '1px solid rgba(255,255,255,0.4)', color: '#fff', fontSize: '0.85rem',
     padding: '0.5rem 1.1rem', borderRadius: '8px', textDecoration: 'none',
   },
-  visualIcon: {
-    position: 'absolute', inset: 0, display: 'flex', alignItems: 'center',
-    justifyContent: 'center', fontSize: '9rem', opacity: 0.15,
-  },
-  visualBottom: { zIndex: 2 },
+  visualMiddle: { zIndex: 2, position: 'relative' },
   visualCity: { color: '#fff', fontSize: '1rem', margin: 0, fontWeight: '600' },
   visualSub: { color: 'rgba(255,255,255,0.65)', fontSize: '0.85rem', margin: '0.4rem 0 0' },
   formPanel: {
     flex: 1.1, padding: '3rem 2.5rem', display: 'flex',
     flexDirection: 'column', justifyContent: 'center',
   },
-  brand: { fontSize: '1.3rem', fontWeight: '700', marginBottom: '1.5rem' },
-  brandText: { color: '#14213d' },
-  brandAccent: { color: '#60A5FA' },
   heading: { fontSize: '1.9rem', fontWeight: '700', color: '#14213d', margin: '0 0 0.3rem' },
   subheading: { color: '#888', fontSize: '0.9rem', margin: '0 0 1.5rem' },
   errorBox: {
