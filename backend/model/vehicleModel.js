@@ -79,7 +79,8 @@ const searchVehicles = async (filters) => {
 
   const sql = `
     SELECT v.*, u.full_name AS owner_name,
-           COUNT(*) OVER() AS total_count
+           COUNT(*) OVER() AS total_count,
+           (SELECT url FROM vehicle_photos WHERE vehicle_id = v.id AND is_primary = true LIMIT 1) AS primary_photo
     FROM vehicles v
     JOIN users u ON u.id = v.owner_id
     WHERE ${where.join(' AND ')}
@@ -94,7 +95,9 @@ const searchVehicles = async (filters) => {
 
 const getVehicleById = async (id) => {
   const result = await db.query(
-    `SELECT v.*, u.full_name AS owner_name, u.phone AS owner_phone
+    `SELECT v.*, u.full_name AS owner_name, u.phone AS owner_phone,
+            (SELECT url FROM vehicle_photos WHERE vehicle_id = v.id AND is_primary = true LIMIT 1) AS primary_photo,
+            (SELECT json_agg(p ORDER BY p.order_index) FROM vehicle_photos p WHERE p.vehicle_id = v.id) AS photos
      FROM vehicles v
      JOIN users u ON u.id = v.owner_id
      WHERE v.id = $1 AND v.is_active = true`,

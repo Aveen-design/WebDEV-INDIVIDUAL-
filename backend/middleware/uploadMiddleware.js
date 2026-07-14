@@ -12,7 +12,7 @@ const storage = new CloudinaryStorage({
   cloudinary,
   params: {
     folder: 'drivenepal/vehicles',
-    allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
+    allowed_formats: ['jpg', 'jpeg', 'png', 'webp', 'avif'],
     transformation: [{ width: 1200, height: 800, crop: 'fill', quality: 'auto' }],
   },
 });

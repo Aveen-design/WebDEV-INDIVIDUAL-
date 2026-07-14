@@ -6,6 +6,10 @@
   box-sizing: border-box;
 }
 
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
 :root {
   --font-sans: 'Inter', sans-serif;
   --font-display: 'Outfit', sans-serif;

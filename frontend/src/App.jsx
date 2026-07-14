@@ -15,6 +15,8 @@ import OAuthCallback from './pages/OAuthCallback';
 import ChooseRole from './pages/ChooseRole';
 import Messages from './pages/Messages';
 import AdminDashboard from './pages/AdminDashboard';
+import Payment from './pages/Payment';
+import PaymentSuccess from './pages/PaymentSuccess';
 
 const About     = () => <div style={{padding:'2rem'}}>About page</div>;
 const Contact   = () => <div style={{padding:'2rem'}}>Contact page</div>;
@@ -51,6 +53,9 @@ const App = () => {
       <Route path="/choose-role" element={<ChooseRole />} />
       <Route path="/messages/:bookingId" element={<ProtectedRoute><Messages /></ProtectedRoute>} />
       <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
+      <Route path="/payment/:bookingId" element={<ProtectedRoute><Payment /></ProtectedRoute>} />
+      <Route path="/payment/success"    element={<PaymentSuccess />} />
+      <Route path="/payment/failure"    element={<PaymentSuccess failure />} />
     </Routes>
   );
 };

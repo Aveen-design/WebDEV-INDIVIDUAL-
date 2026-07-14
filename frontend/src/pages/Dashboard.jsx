@@ -141,11 +141,37 @@ const Dashboard = () => {
                     {isOwner && b.customer_phone && <Detail label="Phone" value={b.customer_phone} />}
                   </div>
 
-                  <div style={{ marginTop: '0.8rem' }}>
+                  <div style={{ marginTop: '0.8rem', display: 'flex', gap: '0.6rem', flexWrap: 'wrap' }}>
                     <Link to={`/messages/${b.id}`}
                       style={{ ...styles.messageBtn, textDecoration: 'none', display: 'inline-block' }}>
                       Message {isOwner ? 'Customer' : 'Owner'}
                     </Link>
+                    {!['pending', 'cancelled', 'rejected'].includes(b.status) && (
+                      <a
+                        href={`http://localhost:8000/api/bookings/${b.id}/agreement`}
+                        target="_blank"
+                        rel="noreferrer"
+                        style={{ ...styles.messageBtn, textDecoration: 'none', display: 'inline-block', background: '#16a34a', color: '#fff' }}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          const token = localStorage.getItem('token');
+                          fetch(`http://localhost:8000/api/bookings/${b.id}/agreement`, {
+                            headers: { Authorization: `Bearer ${token}` },
+                          })
+                            .then(r => r.blob())
+                            .then(blob => {
+                              const url = URL.createObjectURL(blob);
+                              const a = document.createElement('a');
+                              a.href = url;
+                              a.download = `DriveNepal-Agreement-${b.reference_code}.pdf`;
+                              a.click();
+                              URL.revokeObjectURL(url);
+                            });
+                        }}
+                      >
+                        Download Agreement
+                      </a>
+                    )}
                   </div>
 
                   {actions.length > 0 && (
@@ -254,7 +280,7 @@ const styles = {
   detailLabel: { display: 'block', color: '#999', fontSize: '0.72rem', marginBottom: '0.15rem' },
   detailValue: { color: '#14213d', fontSize: '0.9rem', fontWeight: '600' },
   messageBtn: {
-    background: '#f0f0f5', color: '#14213d', border: 'none', borderRadius: '8px',
+    background: '#715de2', color: '#fff', border: 'none', borderRadius: '8px',
     padding: '0.5rem 1.1rem', fontSize: '0.85rem', fontWeight: '600',
   },
   actions: { display: 'flex', gap: '0.6rem', marginTop: '1rem', flexWrap: 'wrap',

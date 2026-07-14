@@ -56,9 +56,7 @@ const handleSubmit = async (e) => {
 
       photos.forEach((file) => data.append('photos', file));
 
-      await api.post('/vehicles', data, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
+      await api.post('/vehicles', data);
       navigate('/owner/vehicles', { state: { added: true } });
     } catch (err) {
       setError(err.response?.data?.message || 'Could not create listing.');
@@ -156,7 +154,7 @@ const handleSubmit = async (e) => {
             </label>
           </div>
   <Field label="Photos (first one is the cover, up to 6)">
-            <input type="file" accept="image/*" multiple onChange={handlePhotos}
+            <input type="file" accept="image/jpeg,image/png,image/webp,image/avif" multiple onChange={handlePhotos}
               style={{ ...styles.input, padding: '0.5rem' }} />
             {photos.length > 0 && (
               <p style={{ color: '#888', fontSize: '0.8rem', margin: '0.4rem 0 0' }}>

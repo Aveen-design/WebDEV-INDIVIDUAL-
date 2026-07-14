@@ -16,9 +16,13 @@ const reviewRoute = require('./route/reviewRoute');
 const messageRoute = require('./route/messageRoute');
 const notificationRoute = require('./route/notificationRoute');
 const adminRoute = require('./route/adminRoute');
-const disputeRoute = require('./route/disputeRoute');
+const disputeRoute  = require('./route/disputeRoute');
+const paymentRoute  = require('./route/paymentRoute');
 
-app.use(cors());
+app.use(cors({
+  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  credentials: true,
+}));
 app.use(express.json());
 
 app.use(passport.initialize());
@@ -43,6 +47,7 @@ app.use('/api/messages', messageRoute);
 app.use('/api/notifications', notificationRoute);
 app.use('/api/admin', adminRoute);
 app.use('/api/disputes', disputeRoute);
+app.use('/api/payments', paymentRoute);
 
 const seedAdmin = async () => {
   const bcrypt = require('bcryptjs');

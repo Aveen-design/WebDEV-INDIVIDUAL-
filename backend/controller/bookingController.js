@@ -1,7 +1,8 @@
 const bookingModel = require('../model/bookingModel');
+const notificationModel = require('../model/notificationModel');
+const { generateAgreementPDF } = require('../service/pdfService');
 
 const PLATFORM_FEE_PERCENT = parseFloat(process.env.PLATFORM_FEE_PERCENT) || 5;
-const notificationModel = require('../model/notificationModel');
 
 const generateReference = () => {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -198,9 +199,33 @@ const updateStatus = async (req, res) => {
   }
 };
 
-module.exports = { createBooking,
+const downloadAgreement = async (req, res) => {
+  try {
+    const booking = await bookingModel.getBookingById(req.params.id);
+    if (!booking) {
+      return res.status(404).json({ success: false, message: 'Booking not found' });
+    }
+
+    const isOwner    = booking.owner_id === req.user.id;
+    const isCustomer = booking.customer_id === req.user.id;
+    const isAdmin    = req.user.role === 'admin';
+
+    if (!isOwner && !isCustomer && !isAdmin) {
+      return res.status(403).json({ success: false, message: 'Not authorised' });
+    }
+
+    generateAgreementPDF(booking, res);
+  } catch (err) {
+    console.error('Agreement PDF error:', err.message);
+    res.status(500).json({ success: false, message: 'Could not generate agreement' });
+  }
+};
+
+module.exports = {
+  createBooking,
   getMyBookings,
   getBooking,
   getOwnerBookings,
   updateStatus,
- };
+  downloadAgreement,
+};

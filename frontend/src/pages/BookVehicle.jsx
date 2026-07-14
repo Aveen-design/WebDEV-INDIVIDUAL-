@@ -104,7 +104,7 @@ const BookVehicle = () => {
         pickup_location: form.pickup_location,
         customer_note: form.customer_note,
       });
-      navigate('/dashboard', { state: { bookingSuccess: res.data.data.reference_code } });
+      navigate(`/payment/${res.data.data.id}`);
     } catch (err) {
       setError(err.response?.data?.message || 'Could not create booking. Please try again.');
     } finally {
