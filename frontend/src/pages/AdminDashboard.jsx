@@ -50,7 +50,7 @@ const AdminDashboard = () => {
 
   const toggleUser = async (id, isActive) => {
     try {
-      await api.patch(`/admin/users/${id}/toggle`, { is_active: !isActive });
+      await api.patch(`/admin/users/${id}/toggle`, { is_active: !isActive }); 
       loadUsers();
     } catch { setMsg('Could not update user.'); }
   };

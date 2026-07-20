@@ -26,7 +26,7 @@ const Navbar = () => {
           <div style={styles.links}>
             <Link to="/"         style={styles.link}>Home</Link>
             <Link to="/vehicles" style={styles.link}>Vehicles</Link>
-            <Link to="/about"    style={styles.link}>About</Link>
+
             <Link to="/contact"  style={styles.link}>Contact</Link>
           </div>
 
@@ -34,9 +34,13 @@ const Navbar = () => {
             {user ? (
               <>
                 <NotificationBell />
-                <Link to="/dashboard" style={styles.dashLink}>
-                  {user.full_name?.split(' ')[0] || 'Dashboard'}
-                </Link>
+                {user.role === 'admin' ? (
+                  <Link to="/admin" style={styles.dashLink}>Admin Panel</Link>
+                ) : (
+                  <Link to="/dashboard" style={styles.dashLink}>
+                    {user.full_name?.split(' ')[0] || 'Dashboard'}
+                  </Link>
+                )}
                 <button onClick={handleLogout} style={styles.logoutBtn}>Logout</button>
               </>
             ) : (

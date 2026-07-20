@@ -17,14 +17,13 @@ import Messages from './pages/Messages';
 import AdminDashboard from './pages/AdminDashboard';
 import Payment from './pages/Payment';
 import PaymentSuccess from './pages/PaymentSuccess';
+import Contact from './pages/Contact';
 
-const About     = () => <div style={{padding:'2rem'}}>About page</div>;
-const Contact   = () => <div style={{padding:'2rem'}}>Contact page</div>;
 
 const GuestRoute = ({ children }) => {
   const { user, loading } = useAuth();
   if (loading) return null;
-  return user ? <Navigate to="/dashboard" replace /> : children;
+  return user ? <Navigate to={user.role === 'admin' ? '/admin' : '/dashboard'} replace /> : children;
 };
 
 const ProtectedRoute = ({ children }) => {
@@ -39,7 +38,7 @@ const App = () => {
       <Route path="/"          element={<Home />} />
       <Route path="/vehicles"  element={<Vehicles />} />
       <Route path="/vehicles/:id" element={<VehicleDetail />} />
-      <Route path="/about"     element={<About />} />
+
       <Route path="/contact"   element={<Contact />} />
       <Route path="/register"  element={<GuestRoute><Register /></GuestRoute>} />
       <Route path="/login"     element={<GuestRoute><Login /></GuestRoute>} />
