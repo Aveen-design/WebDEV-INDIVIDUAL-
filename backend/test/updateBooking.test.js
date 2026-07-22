@@ -27,6 +27,7 @@ jest.mock('../middleware/authMiddleware', () => ({
 const request = require('supertest');
 const app = require('../server');
 const {
+  
   getBookingOwnerAndCustomer,
   updateBookingStatus,
 } = require('../model/bookingModel');
